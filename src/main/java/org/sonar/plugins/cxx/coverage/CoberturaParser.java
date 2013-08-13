@@ -19,17 +19,17 @@
  */
 package org.sonar.plugins.cxx.coverage;
 
-import java.io.File;
-import java.util.Map;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.plugins.cxx.utils.CxxUtils;
+
+import javax.xml.stream.XMLStreamException;
+
+import java.io.File;
+import java.util.Map;
 
 /**
  * {@inheritDoc}
@@ -39,24 +39,24 @@ public class CoberturaParser implements CoverageParser {
    * {@inheritDoc}
    */
   public void parseReport(File xmlFile, final Map<String, CoverageMeasuresBuilder> coverageData)
-    throws XMLStreamException
+      throws XMLStreamException
   {
     CxxUtils.LOG.info("Parsing report '{}'", xmlFile);
-    
+
     StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
       /**
        * {@inheritDoc}
        */
       public void stream(SMHierarchicCursor rootCursor) throws XMLStreamException {
-	rootCursor.advance();
-	collectPackageMeasures(rootCursor.descendantElementCursor("package"), coverageData);
+        rootCursor.advance();
+        collectPackageMeasures(rootCursor.descendantElementCursor("package"), coverageData);
       }
     });
     parser.parse(xmlFile);
   }
-  
+
   private void collectPackageMeasures(SMInputCursor pack, Map<String, CoverageMeasuresBuilder> coverageData)
-    throws XMLStreamException
+      throws XMLStreamException
   {
     while (pack.getNext() != null) {
       collectFileMeasures(pack.descendantElementCursor("class"), coverageData);
@@ -64,7 +64,7 @@ public class CoberturaParser implements CoverageParser {
   }
 
   private void collectFileMeasures(SMInputCursor clazz, Map<String, CoverageMeasuresBuilder> coverageData)
-    throws XMLStreamException
+      throws XMLStreamException
   {
     while (clazz.getNext() != null) {
       String fileName = clazz.getAttrValue("filename");
@@ -81,13 +81,19 @@ public class CoberturaParser implements CoverageParser {
     SMInputCursor line = clazz.childElementCursor("lines").advance().childElementCursor("line");
     while (line.getNext() != null) {
       int lineId = Integer.parseInt(line.getAttrValue("number"));
-      builder.setHits(lineId, Integer.parseInt(line.getAttrValue("hits")));
+      long noHits = Long.parseLong(line.getAttrValue("hits"));
+      if(noHits > Integer.MAX_VALUE){
+        CxxUtils.LOG.warn("Truncating the actual number of hits ({}) to the maximum number supported by Sonar ({})",
+                          noHits, Integer.MAX_VALUE);
+        noHits = Integer.MAX_VALUE;
+      }
+      builder.setHits(lineId, (int)noHits);
 
       String isBranch = line.getAttrValue("branch");
       String text = line.getAttrValue("condition-coverage");
       if (StringUtils.equals(isBranch, "true") && StringUtils.isNotBlank(text)) {
-	String[] conditions = StringUtils.split(StringUtils.substringBetween(text, "(", ")"), "/");
-	builder.setConditions(lineId,  Integer.parseInt(conditions[1]), Integer.parseInt(conditions[0]));
+        String[] conditions = StringUtils.split(StringUtils.substringBetween(text, "(", ")"), "/");
+        builder.setConditions(lineId, Integer.parseInt(conditions[1]), Integer.parseInt(conditions[0]));
       }
     }
   }
