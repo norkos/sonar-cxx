@@ -10,9 +10,9 @@
 
   <artifactId>sonar-cxx-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>0.2</version>
+  <version>0.3</version>
   <name>Sonar C++ Community Plugin</name>
-  <description>C++ Plugin for Sonar (Community Edition)</description>
+  <description>C++ Plugin for Sonar (Community Edition) without AST changes</description>
   <url>http://docs.codehaus.org/pages/viewpage.action?pageId=185073817</url>
   <inceptionYear>2010</inceptionYear>
 
@@ -25,6 +25,11 @@
   </licenses>
 
   <developers>
+  <developer>
+      <id>norkos</id>
+      <name>Norbert Kosmal</name>
+      <email>norbert.kosmal@gmail.com</email>
+    </developer>
     <developer>
       <id>fbonin</id>
       <name>Franck Bonin</name>

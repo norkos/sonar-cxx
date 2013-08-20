@@ -17,17 +17,27 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+package org.sonar.plugins.cxx.cppncss;
 
-package org.sonar.plugins.cxx;
+import org.sonar.api.platform.ServerFileSystem;
+import org.sonar.api.rules.XMLRuleParser;
+import org.sonar.plugins.cxx.utils.CxxAbstractRuleRepository;
 
-import static org.junit.Assert.assertEquals;
+public class CxxCppNcssRuleRepository extends CxxAbstractRuleRepository{
+	  public static final String KEY = "cppncss";
+	  public static final String FUNCTION_COMPLEXITY = "FunctionComplexity";
+	  public static final String FUNCTION_SIZE = "FunctionSize";
+	  
+	  /**
+	   * {@inheritDoc}
+	   */
+	  public CxxCppNcssRuleRepository(ServerFileSystem fileSystem, XMLRuleParser xmlRuleParser) {
+	    super(fileSystem, xmlRuleParser, KEY);
+	    setName(KEY);
+	  }
 
-import org.junit.Test;
-
-public class CxxPluginTest {
-  @Test
-  public void testGetExtensions() throws Exception {
-    CxxPlugin plugin = new CxxPlugin();
-    assertEquals(24, plugin.getExtensions().size());
-  }
-}
+	  @Override
+	  protected String fileName() {
+	    return "/cppncss.xml";
+	  }
+	}

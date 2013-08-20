@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ASCII"?>
+<rules>
+	<rule>
+		<key>FunctionComplexity</key>
+		<configkey>FunctionComplexity</configkey>
+		<name>Function complexity</name>
+		<description>
+			Definition  of done: Cyclomatic complexity of methods/functions must not exceed certain level.
+		</description>
+	</rule>
+	<rule>
+		<key>FunctionSize</key>
+		<configkey>FunctionSize</configkey>
+		<name>Function size</name>
+		<description>
+			Definition  of done: Functions/methods must not exceed certain number of code lines.
+		</description>
+	</rule>
+</rules>

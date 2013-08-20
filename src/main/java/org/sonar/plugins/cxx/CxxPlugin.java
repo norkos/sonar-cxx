@@ -26,9 +26,11 @@ import org.sonar.api.Extension;
 import org.sonar.api.Properties;
 import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
+import org.sonar.plugins.cxx.coverage.CxxCoverageGuard;
 import org.sonar.plugins.cxx.coverage.CxxCoverageSensor;
 import org.sonar.plugins.cxx.cppcheck.CxxCppCheckRuleRepository;
 import org.sonar.plugins.cxx.cppcheck.CxxCppCheckSensor;
+import org.sonar.plugins.cxx.cppncss.CxxCppNcssRuleRepository;
 import org.sonar.plugins.cxx.cppncss.CxxCppNcssSensor;
 import org.sonar.plugins.cxx.externalrules.CxxExternalRulesRuleRepository;
 import org.sonar.plugins.cxx.externalrules.CxxExternalRulesSensor;
@@ -159,6 +161,7 @@ public final class CxxPlugin extends SonarPlugin {
     l.add(CxxPCLintRuleRepository.class);
     l.add(CxxPCLintSensor.class);
     l.add(CxxCppNcssSensor.class);
+    l.add(CxxCppNcssRuleRepository.class);
     l.add(CxxVeraxxRuleRepository.class);
     l.add(CxxVeraxxSensor.class);
     l.add(CxxValgrindRuleRepository.class);
@@ -166,7 +169,8 @@ public final class CxxPlugin extends SonarPlugin {
     l.add(CxxDefaultProfile.class);
     l.add(CxxCommonRulesEngineProvider.class);
     l.add(CxxExternalRulesSensor.class);
-    l.add(CxxExternalRulesRuleRepository.class);    
+    l.add(CxxExternalRulesRuleRepository.class); 
+    l.add(CxxCoverageGuard.class);
 
     return l;
   }

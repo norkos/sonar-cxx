@@ -43,6 +43,7 @@ public abstract class CxxReportSensor implements Sensor {
 
   public CxxReportSensor() {}
   
+
   /**
    * {@inheritDoc}
    */
@@ -58,6 +59,13 @@ public abstract class CxxReportSensor implements Sensor {
     this.conf = conf;
   }
 
+	protected Settings getConf() {
+		return conf;
+	}
+  
+  protected RuleFinder getRuleFinder() {
+	return ruleFinder;
+}
   /**
    * {@inheritDoc}
    */
