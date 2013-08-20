@@ -17,17 +17,40 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+package org.sonar.plugins.cxx.cohesion.graph;
 
-package org.sonar.plugins.cxx;
+public class Node {
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
-public class CxxPluginTest {
-  @Test
-  public void testGetExtensions() throws Exception {
-    CxxPlugin plugin = new CxxPlugin();
-    assertEquals(22, plugin.getExtensions().size());
+  private Object innerObject = null;
+  
+  public Node(Object innerObject) {
+    this.innerObject = innerObject;
   }
+  
+  public Object getInnerObject() {
+    if(innerObject == null) {
+      throw new IllegalArgumentException("Inner object for call graph node can't be null."); 
+     }
+    return innerObject;
+  }
+  
+  public boolean equals(Object o) {
+    if(o == this) {
+      return true;
+    }
+    if(o instanceof Node) {
+      return getInnerObject().equals(((Node) o).getInnerObject());
+    }
+    
+    return false;
+  }
+  
+  public int hashCode() {
+    return getInnerObject().hashCode();
+  }
+
+  public String toString() {
+    return innerObject.toString();
+  }
+  
 }

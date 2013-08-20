@@ -17,17 +17,28 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
+package org.sonar.plugins.cxx.rats;
 
-package org.sonar.plugins.cxx;
+import org.sonar.api.platform.ServerFileSystem;
+import org.sonar.api.rules.XMLRuleParser;
+import org.sonar.plugins.cxx.utils.CxxAbstractRuleRepository;
 
-import static org.junit.Assert.assertEquals;
+/**
+ * {@inheritDoc}
+ */
+public class CxxRatsRuleRepository extends CxxAbstractRuleRepository {
+  static final String KEY = "rats";
 
-import org.junit.Test;
+  /**
+   * {@inheritDoc}
+   */
+  public CxxRatsRuleRepository(ServerFileSystem fileSystem, XMLRuleParser xmlRuleParser) {
+    super(fileSystem, xmlRuleParser, KEY);
+    setName(KEY);
+  }
 
-public class CxxPluginTest {
-  @Test
-  public void testGetExtensions() throws Exception {
-    CxxPlugin plugin = new CxxPlugin();
-    assertEquals(22, plugin.getExtensions().size());
+  @Override
+  protected String fileName() {
+    return "/rats.xml";
   }
 }
