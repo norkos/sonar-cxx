@@ -1,3 +1,4 @@
+
 /*
  * Sonar Cxx Plugin, open source software quality management tool.
  * Copyright (C) 2010 - 2011, Neticoa SAS France - Tous droits reserves.
@@ -30,28 +31,31 @@ import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
-import org.sonar.plugins.cxx.utils.EmptyReportException;
 
 import javax.xml.stream.XMLStreamException;
 
 import java.io.File;
 
 /**
- * Sensor for cppcheck (static code analyzer).
+ * Sensor for CppCheck external tool.
+ *
+ * CppCheck is an equivalent to FindBug but for C++
  *
  * @author fbonin
  * @author vhardion
+ * @todo enable include dirs (-I)
+ * @todo allow configuration of path to analyze
  */
 public class CxxCppCheckSensor extends CxxReportSensor {
   public static final String REPORT_PATH_KEY = "sonar.cxx.cppcheck.reportPath";
   private static final String DEFAULT_REPORT_PATH = "cppcheck-reports/cppcheck-result-*.xml";
   private RulesProfile profile;
-
+  
   /**
    * {@inheritDoc}
    */
   public CxxCppCheckSensor(RuleFinder ruleFinder, Settings conf,
-      RulesProfile profile) {
+          RulesProfile profile) {
     super(ruleFinder, conf);
     this.profile = profile;
   }
@@ -64,50 +68,47 @@ public class CxxCppCheckSensor extends CxxReportSensor {
     return super.shouldExecuteOnProject(project)
       && !profile.getActiveRulesByRepository(CxxCppCheckRuleRepository.KEY).isEmpty();
   }
-
+  
   @Override
   protected String reportPathKey() {
     return REPORT_PATH_KEY;
   }
-
+  
   @Override
   protected String defaultReportPath() {
     return DEFAULT_REPORT_PATH;
   }
-
+  
   @Override
   protected void processReport(final Project project, final SensorContext context, File report)
-      throws javax.xml.stream.XMLStreamException
+    throws javax.xml.stream.XMLStreamException
   {
     StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
       /**
        * {@inheritDoc}
        */
       public void stream(SMHierarchicCursor rootCursor) throws XMLStreamException {
-        try{
-          rootCursor.advance(); // results
-        }
-        catch(com.ctc.wstx.exc.WstxEOFException eofExc){
-          throw new EmptyReportException();
-        }
+        rootCursor.advance(); //results
 
-        SMInputCursor errorCursor = rootCursor.childElementCursor("error"); // error
+        SMInputCursor errorCursor = rootCursor.childElementCursor("error"); //error
         while (errorCursor.getNext() != null) {
           String file = errorCursor.getAttrValue("file");
           String line = errorCursor.getAttrValue("line");
           String id = errorCursor.getAttrValue("id");
           String msg = errorCursor.getAttrValue("msg");
-
-          if (isInputValid(file, line, id, msg)) {
-            saveViolation(project, context, CxxCppCheckRuleRepository.KEY, file, Integer.parseInt(line), id, msg);
+          
+          if(isInputValid(file, line, id, msg)) {
+            saveViolation(project, context, CxxCppCheckRuleRepository.KEY,
+                        file, Integer.parseInt(line), id, msg);
           } else {
-            CxxUtils.LOG.warn("Skipping invalid violation: '{}'", msg);
+            CxxUtils.LOG.warn("CppCheck warning: {}", msg );
           }
         }
       }
 
       private boolean isInputValid(String file, String line, String id, String msg) {
-        return !StringUtils.isEmpty(file) && !StringUtils.isEmpty(id) && !StringUtils.isEmpty(msg);
+        return !StringUtils.isEmpty(file) && !StringUtils.isEmpty(line) 
+          && !StringUtils.isEmpty(id) && !StringUtils.isEmpty(msg);
       }
     });
 

@@ -19,17 +19,17 @@
  */
 package org.sonar.plugins.cxx.coverage;
 
-import org.sonar.api.measures.CoverageMeasuresBuilder;
-
-import javax.xml.stream.XMLStreamException;
-
 import java.io.File;
 import java.util.Map;
 
-/**
- * The interface a coverage report parser has to implement in order to be used
- * by CxxCoverageSensor
- */
+import javax.xml.stream.XMLStreamException;
+
+import org.sonar.api.measures.CoverageMeasuresBuilder;
+
+  /**
+   * The interface a coverage report parser has to implement in order to be used
+   * by CxxCoverageSensor
+   */
 public interface CoverageParser {
   /**
    * Parses the given report and stores the results in the according builder
@@ -38,5 +38,5 @@ public interface CoverageParser {
    *        to be used to store the results into. 
    */
   void parseReport(File xmlFile, Map<String, CoverageMeasuresBuilder> coverageData)
-      throws XMLStreamException;
+    throws XMLStreamException;
 }

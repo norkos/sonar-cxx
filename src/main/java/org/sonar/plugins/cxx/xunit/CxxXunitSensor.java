@@ -151,7 +151,7 @@ public class CxxXunitSensor extends CxxReportSensor {
       context.saveMeasure(unitTest, CoreMetrics.TESTS, testsCount);
       context.saveMeasure(unitTest, CoreMetrics.TEST_ERRORS, (double)fileReport.getErrors());
       context.saveMeasure(unitTest, CoreMetrics.TEST_FAILURES, (double)fileReport.getFailures());
-      // context.saveMeasure(unitTest, CoreMetrics.TEST_EXECUTION_TIME, (double)fileReport.getTime());
+      context.saveMeasure(unitTest, CoreMetrics.TEST_EXECUTION_TIME, (double)fileReport.getTime());
       double passedTests = testsCount - fileReport.getErrors() - fileReport.getFailures();
       if (testsCount > 0) {
         double percentage = passedTests * 100d / testsCount;
