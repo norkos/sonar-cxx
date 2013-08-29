@@ -26,17 +26,74 @@ import java.io.Reader;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
+import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
+import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.cxx.CxxLanguage;
+import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
-public class CxxCoverageGuard implements Sensor {
+public class CxxCoverageGuard extends CxxReportSensor {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public CxxCoverageGuard(RuleFinder ruleFinder, Settings conf,
+			RulesProfile profile) {
+		super(ruleFinder, conf);
+	}
+
+	private interface GuardStrategy {
+		public boolean isApplicable(org.sonar.api.resources.File cxxFile,
+				SensorContext context);
+
+		public void saveMeasure(org.sonar.api.resources.File cxxFile,
+				SensorContext context);
+
+	}
+
+	private final class NoCoverage implements GuardStrategy {
+
+		public boolean isApplicable(org.sonar.api.resources.File cxxFile,
+				SensorContext context) {
+
+			Measure measure = context
+					.getMeasure(cxxFile, CoreMetrics.FUNCTIONS);
+			int numberOfFunctions = measure != null ? measure.getIntValue() : 0;
+
+			return numberOfFunctions > 0
+					&& context.getMeasure(cxxFile, CoreMetrics.LINES_TO_COVER) == null;
+		}
+
+		public void saveMeasure(org.sonar.api.resources.File cxxFile,
+				SensorContext context) {
+
+			CxxUtils.LOG.debug("Saving zero coverage for '{}'",
+					cxxFile.toString());
+
+			context.saveMeasure(cxxFile, CoreMetrics.LINES_TO_COVER, context
+					.getMeasure(cxxFile, CoreMetrics.NCLOC).getValue());
+
+			context.saveMeasure(cxxFile, CoreMetrics.UNCOVERED_LINES, context
+					.getMeasure(cxxFile, CoreMetrics.NCLOC).getValue());
+
+			context.saveMeasure(cxxFile, CoreMetrics.COVERAGE_LINE_HITS_DATA,
+					0d);
+
+			context.saveMeasure(cxxFile, CoreMetrics.LINE_COVERAGE, 0d);
+
+			context.saveMeasure(cxxFile, CoreMetrics.BRANCH_COVERAGE, 0d);
+
+			context.saveMeasure(cxxFile, CoreMetrics.COVERAGE, 0d);
+		}
+
+	}
 
 	public boolean shouldExecuteOnProject(Project project) {
 		return CxxLanguage.KEY.equals(project.getLanguageKey());
@@ -45,6 +102,9 @@ public class CxxCoverageGuard implements Sensor {
 	public void analyse(Project project, SensorContext context) {
 		final List<InputFile> sources = project.getFileSystem().mainFiles(
 				CxxLanguage.KEY);
+
+		GuardStrategy noCoverageProvided = new NoCoverage();
+		CoverageExcluder excluder = new CoberturaExcluder(conf);
 
 		for (InputFile inputFile : sources) {
 			File file = inputFile.getFile();
@@ -55,44 +115,11 @@ public class CxxCoverageGuard implements Sensor {
 			try {
 				reader = new FileReader(file);
 
-				double numberOfFunctions = 0;
-				Measure measure = context.getMeasure(cxxFile,
-						CoreMetrics.FUNCTIONS);
-				if (measure != null) {
-					numberOfFunctions = measure.getValue();
+				if (!excluder.isExcluded(file)
+						&& noCoverageProvided.isApplicable(cxxFile, context)) {
+					noCoverageProvided.saveMeasure(cxxFile, context);
 				}
 
-				if (numberOfFunctions > 0) {
-
-					measure = context.getMeasure(cxxFile,
-							CoreMetrics.LINES_TO_COVER);
-					if (measure == null) {
-
-						CxxUtils.LOG.debug("Saving zero coverage for '{}'",
-								file.getPath());
-
-						context.saveMeasure(cxxFile,
-								CoreMetrics.LINES_TO_COVER,
-								context.getMeasure(cxxFile, CoreMetrics.NCLOC)
-										.getValue());
-
-						context.saveMeasure(cxxFile,
-								CoreMetrics.UNCOVERED_LINES, context
-										.getMeasure(cxxFile, CoreMetrics.NCLOC)
-										.getValue());
-
-						context.saveMeasure(cxxFile,
-								CoreMetrics.COVERAGE_LINE_HITS_DATA, 0d);
-
-						context.saveMeasure(cxxFile, CoreMetrics.LINE_COVERAGE,
-								0d);
-
-						context.saveMeasure(cxxFile,
-								CoreMetrics.BRANCH_COVERAGE, 0d);
-
-						context.saveMeasure(cxxFile, CoreMetrics.COVERAGE, 0d);
-					}
-				}
 			} catch (IOException exc) {
 				String msg = new StringBuilder()
 						.append("Cannot analyse the file: '")
@@ -103,5 +130,4 @@ public class CxxCoverageGuard implements Sensor {
 			}
 		}
 	}
-
 }

@@ -34,15 +34,7 @@ import org.sonar.plugins.cxx.cppncss.CxxCppNcssRuleRepository;
 import org.sonar.plugins.cxx.cppncss.CxxCppNcssSensor;
 import org.sonar.plugins.cxx.externalrules.CxxExternalRulesRuleRepository;
 import org.sonar.plugins.cxx.externalrules.CxxExternalRulesSensor;
-import org.sonar.plugins.cxx.pclint.CxxPCLintRuleRepository;
-import org.sonar.plugins.cxx.pclint.CxxPCLintSensor;
-import org.sonar.plugins.cxx.rats.CxxRatsRuleRepository;
-import org.sonar.plugins.cxx.rats.CxxRatsSensor;
 import org.sonar.plugins.cxx.squid.CxxSquidSensor;
-import org.sonar.plugins.cxx.valgrind.CxxValgrindRuleRepository;
-import org.sonar.plugins.cxx.valgrind.CxxValgrindSensor;
-import org.sonar.plugins.cxx.veraxx.CxxVeraxxRuleRepository;
-import org.sonar.plugins.cxx.veraxx.CxxVeraxxSensor;
 import org.sonar.plugins.cxx.xunit.CxxXunitSensor;
 
 @Properties({
@@ -64,13 +56,6 @@ import org.sonar.plugins.cxx.xunit.CxxXunitSensor;
       key = CxxCppCheckSensor.REPORT_PATH_KEY,
       defaultValue = "",
       name = "Path to cppcheck report(s)",
-      description = "Relative to projects' root. Ant patterns are accepted",
-      global = false,
-      project = true),
-    @Property(
-      key = CxxPCLintSensor.REPORT_PATH_KEY,
-      defaultValue = "",
-      name = "Path to pclint report(s)",
       description = "Relative to projects' root. Ant patterns are accepted",
       global = false,
       project = true),
@@ -103,27 +88,6 @@ import org.sonar.plugins.cxx.xunit.CxxXunitSensor;
       global = false,
       project = true),
     @Property(
-      key = CxxRatsSensor.REPORT_PATH_KEY,
-      defaultValue = "",
-      name = "Path to rats report(s)",
-      description = "Relative to projects' root. Ant patterns are accepted",
-      global = false,
-      project = true),
-    @Property(
-      key = CxxValgrindSensor.REPORT_PATH_KEY,
-      defaultValue = "",
-      name = "Path to valgrind report(s)",
-      description = "Relative to projects' root. Ant patterns are accepted",
-      global = false,
-      project = true),
-    @Property(
-      key = CxxVeraxxSensor.REPORT_PATH_KEY,
-      defaultValue = "",
-      name = "Path to vera++ report(s)",
-      description = "Relative to projects' root. Ant patterns are accepted",
-      global = false,
-      project = true),
-    @Property(
       key = CxxXunitSensor.REPORT_PATH_KEY,
       defaultValue = "",
       name = "Path to unit test execution report(s)",
@@ -152,20 +116,12 @@ public final class CxxPlugin extends SonarPlugin {
     l.add(CxxColorizer.class);
     l.add(CxxSquidSensor.class);
     l.add(CxxCpdMapping.class);
-    l.add(CxxRatsRuleRepository.class);
-    l.add(CxxRatsSensor.class);
     l.add(CxxXunitSensor.class);
     l.add(CxxCoverageSensor.class);
     l.add(CxxCppCheckRuleRepository.class);
     l.add(CxxCppCheckSensor.class);
-    l.add(CxxPCLintRuleRepository.class);
-    l.add(CxxPCLintSensor.class);
     l.add(CxxCppNcssSensor.class);
     l.add(CxxCppNcssRuleRepository.class);
-    l.add(CxxVeraxxRuleRepository.class);
-    l.add(CxxVeraxxSensor.class);
-    l.add(CxxValgrindRuleRepository.class);
-    l.add(CxxValgrindSensor.class);
     l.add(CxxDefaultProfile.class);
     l.add(CxxCommonRulesEngineProvider.class);
     l.add(CxxExternalRulesSensor.class);

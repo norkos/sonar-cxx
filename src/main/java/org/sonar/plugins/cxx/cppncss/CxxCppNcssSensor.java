@@ -115,7 +115,7 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 	}
 
 	private int getParam(int defaultValue, String param) {
-		String value = getConf().getString(param);
+		String value = conf.getString(param);
 		if (value == null) {
 			return defaultValue;
 		}

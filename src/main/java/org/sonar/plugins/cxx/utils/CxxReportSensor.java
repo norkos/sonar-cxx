@@ -39,7 +39,7 @@ import org.sonar.plugins.cxx.CxxLanguage;
  */
 public abstract class CxxReportSensor implements Sensor {
   private RuleFinder ruleFinder;
-  private Settings conf = null;
+  protected Settings conf = null;
 
   public CxxReportSensor() {}
   
@@ -59,9 +59,6 @@ public abstract class CxxReportSensor implements Sensor {
     this.conf = conf;
   }
 
-	protected Settings getConf() {
-		return conf;
-	}
   
   protected RuleFinder getRuleFinder() {
 	return ruleFinder;
