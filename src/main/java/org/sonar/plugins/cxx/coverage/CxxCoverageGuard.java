@@ -88,8 +88,17 @@ public class CxxCoverageGuard extends CxxReportSensor {
 
 			context.saveMeasure(cxxFile, CoreMetrics.LINE_COVERAGE, 0d);
 
-			context.saveMeasure(cxxFile, CoreMetrics.BRANCH_COVERAGE, 0d);
+			/**
+			 * branch coverage <= cyclomatic complexity <= number of paths.
+			 */
+			context.saveMeasure(cxxFile, CoreMetrics.UNCOVERED_CONDITIONS,
+					context.getMeasure(cxxFile, CoreMetrics.COMPLEXITY)
+							.getValue());
+			context.saveMeasure(cxxFile, CoreMetrics.CONDITIONS_TO_COVER,
+					context.getMeasure(cxxFile, CoreMetrics.COMPLEXITY)
+							.getValue());
 
+			context.saveMeasure(cxxFile, CoreMetrics.BRANCH_COVERAGE, 0d);
 			context.saveMeasure(cxxFile, CoreMetrics.COVERAGE, 0d);
 		}
 

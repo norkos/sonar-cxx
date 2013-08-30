@@ -75,7 +75,7 @@ public class CxxSampleProjectIT {
                                67.8, 82.0, 2.0, 2.0,
                                7.0, 1.4,
                             //   33.0, 0.0,
-                               44.7, 43.6, 50.0,
+                               42.0, 43.6, 36.4,
                                60.0, 2.0, 0.0, 5.0};
 
     assertThat(values, is(expectedValues));
@@ -105,7 +105,7 @@ public class CxxSampleProjectIT {
                                73.2, 82.0, 2.0, 2.0,
                                6.0, 1.5,
                       //         30.0, 0.0,
-                               44.7, 43.6, 50.0};
+                               42.0, 43.6, 36.4};
     
     assertThat(values, is(expectedValues));
     assertThat(getPackageMeasure("function_complexity_distribution").getData(), is("1=2;2=2;4=0;6=0;8=0;10=0;12=0"));
