@@ -33,58 +33,58 @@ import org.sonar.wsclient.services.ResourceQuery;
 //@Ignore
 public class CxxSampleProject2IT {
 
-  private static Sonar sonar;
-  private static final String PROJECT_SAMPLE = "CxxPlugin:Sample3";
+	private static Sonar sonar;
+	private static final String PROJECT_SAMPLE = "CxxPlugin:Sample3";
+	private static final String DIR_UTILS = "CxxPlugin:Sample3:lib";
 
-  @BeforeClass
-  public static void buildServer() {
-    sonar = Sonar.create("http://localhost:9000");
-  }
+	@BeforeClass
+	public static void buildServer() {
+		sonar = Sonar.create("http://localhost:9000");
+	}
 
-  @Test
-  public void coverageMetrics() {
-    String[] metricNames =
-      {
-       "coverage", "line_coverage", "branch_coverage"
-      };
+	@Test
+	public void directoryMetrics() {
+		String[] metricNames = { "coverage", "line_coverage", "branch_coverage" };
 
-    for(int i = 0; i < metricNames.length; ++i){
-      assertNull(getProjectMeasure(metricNames[i]));
-    }
+		for (int i = 0; i < metricNames.length; ++i) {
+			assertNull(getPackageMeasure(metricNames[i]));
+		}
+	}
 
-  }
-  
-  @Test
-  public void projectsMetrics() {
-    String[] metricNames =
-      {"ncloc", "lines",
-       "files", "directories", "functions",
-       "comment_lines_density", "comment_lines", "comment_blank_lines", "commented_out_code_lines",
-       "duplicated_lines_density", "duplicated_lines", "duplicated_blocks", "duplicated_files",
-       "complexity", "function_complexity",
-     //  "coverage", "line_coverage", "branch_coverage",
-       "test_success_density", "test_failures", "test_errors", "tests"
-      };
+	@Test
+	public void coverageMetrics() {
+		String[] metricNames = { "coverage", "line_coverage", "branch_coverage" };
 
-    double[] values = new double[metricNames.length];
-    for(int i = 0; i < metricNames.length; ++i){
-      values[i] = getProjectMeasure(metricNames[i]).getValue();
-    }
+		for (int i = 0; i < metricNames.length; ++i) {
+			assertEquals(0, getProjectMeasure(metricNames[i]).getIntValue()
+					.intValue());
+		}
 
-    double[] expectedValues = {59.0, 121.0,
-                               4.0, 3.0, 5.0,
-                               28.9, 24.0, 10.0, 0.0,
-                               67.8, 82.0, 2.0, 2.0,
-                               7.0, 1.4,
-       //                        0.0, 0.0, 0.0,
-                               60.0, 2.0, 0.0, 5.0};
+	}
 
-    assertThat(values, is(expectedValues));
-  }
+	@Test
+	public void projectsMetrics() {
+		String[] metricNames = { "critical_violations" };
 
+		double[] values = new double[metricNames.length];
+		for (int i = 0; i < metricNames.length; ++i) {
+			values[i] = getProjectMeasure(metricNames[i]).getValue();
+		}
 
-  private Measure getProjectMeasure(String metricKey) {
-    Resource resource = sonar.find(ResourceQuery.createForMetrics(PROJECT_SAMPLE, metricKey));
-    return resource!=null ? resource.getMeasure(metricKey) : null;
-  }
+		double[] expectedValues = { 3.0 };
+
+		assertThat(values, is(expectedValues));
+	}
+
+	private Measure getProjectMeasure(String metricKey) {
+		Resource resource = sonar.find(ResourceQuery.createForMetrics(
+				PROJECT_SAMPLE, metricKey));
+		return resource != null ? resource.getMeasure(metricKey) : null;
+	}
+
+	private Measure getPackageMeasure(String metricKey) {
+		Resource resource = sonar.find(ResourceQuery.createForMetrics(
+				DIR_UTILS, metricKey));
+		return resource != null ? resource.getMeasure(metricKey) : null;
+	}
 }
