@@ -35,65 +35,83 @@ import org.sonar.plugins.cxx.utils.CxxUtils;
  * {@inheritDoc}
  */
 public class CoberturaParser implements CoverageParser {
-  /**
-   * {@inheritDoc}
-   */
-  public void parseReport(File xmlFile, final Map<String, CoverageMeasuresBuilder> coverageData)
-    throws XMLStreamException
-  {
-    CxxUtils.LOG.info("Parsing report '{}'", xmlFile);
-    
-    StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
-      /**
-       * {@inheritDoc}
-       */
-      public void stream(SMHierarchicCursor rootCursor) throws XMLStreamException {
-	rootCursor.advance();
-	collectPackageMeasures(rootCursor.descendantElementCursor("package"), coverageData);
-      }
-    });
-    parser.parse(xmlFile);
-  }
-  
-  private void collectPackageMeasures(SMInputCursor pack, Map<String, CoverageMeasuresBuilder> coverageData)
-    throws XMLStreamException
-  {
-    while (pack.getNext() != null) {
-      collectFileMeasures(pack.descendantElementCursor("class"), coverageData);
-    }
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void parseReport(File xmlFile,
+			final Map<String, CoverageMeasuresBuilder> coverageData)
+			throws XMLStreamException {
+		CxxUtils.LOG.info("Parsing report '{}'", xmlFile);
 
-  private void collectFileMeasures(SMInputCursor clazz, Map<String, CoverageMeasuresBuilder> coverageData)
-    throws XMLStreamException
-  {
-    while (clazz.getNext() != null) {
-      String fileName = clazz.getAttrValue("filename");
-      CoverageMeasuresBuilder builder = coverageData.get(fileName);
-      if (builder == null) {
-        builder = CoverageMeasuresBuilder.create();
-        coverageData.put(fileName, builder);
-      }
-      collectFileData(clazz, builder);
-    }
-  }
+		StaxParser parser = new StaxParser(new StaxParser.XmlStreamHandler() {
+			/**
+			 * {@inheritDoc}
+			 */
+			public void stream(SMHierarchicCursor rootCursor)
+					throws XMLStreamException {
+				rootCursor.advance();
+				collectPackageMeasures(
+						rootCursor.descendantElementCursor("package"),
+						coverageData);
+			}
+		});
+		parser.parse(xmlFile);
+	}
 
-  private void collectFileData(SMInputCursor clazz, CoverageMeasuresBuilder builder) throws XMLStreamException {
-    SMInputCursor line = clazz.childElementCursor("lines").advance().childElementCursor("line");
-    while (line.getNext() != null) {
-      int lineId = Integer.parseInt(line.getAttrValue("number"));
-      builder.setHits(lineId, Integer.parseInt(line.getAttrValue("hits")));
+	private void collectPackageMeasures(SMInputCursor pack,
+			Map<String, CoverageMeasuresBuilder> coverageData)
+			throws XMLStreamException {
+		while (pack.getNext() != null) {
+			collectFileMeasures(pack.descendantElementCursor("class"),
+					coverageData);
+		}
+	}
 
-      String isBranch = line.getAttrValue("branch");
-      String text = line.getAttrValue("condition-coverage");
-      if (StringUtils.equals(isBranch, "true") && StringUtils.isNotBlank(text)) {
-	String[] conditions = StringUtils.split(StringUtils.substringBetween(text, "(", ")"), "/");
-	builder.setConditions(lineId,  Integer.parseInt(conditions[1]), Integer.parseInt(conditions[0]));
-      }
-    }
-  }
+	private void collectFileMeasures(SMInputCursor clazz,
+			Map<String, CoverageMeasuresBuilder> coverageData)
+			throws XMLStreamException {
+		while (clazz.getNext() != null) {
+			String fileName = clazz.getAttrValue("filename");
+			CoverageMeasuresBuilder builder = coverageData.get(fileName);
+			if (builder == null) {
+				builder = CoverageMeasuresBuilder.create();
+				coverageData.put(fileName, builder);
+			}
+			collectFileData(clazz, builder);
+		}
+	}
 
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
-  }
+	private void collectFileData(SMInputCursor clazz,
+			CoverageMeasuresBuilder builder) throws XMLStreamException {
+		SMInputCursor line = clazz.childElementCursor("lines").advance()
+				.childElementCursor("line");
+		while (line.getNext() != null) {
+			int lineId = Integer.parseInt(line.getAttrValue("number"));
+			String hits = line.getAttrValue("hits");
+			int hitsValue = 0;
+			try {
+				hitsValue = Integer.parseInt(hits);
+			} catch (NumberFormatException ex) {
+				long rethrowExceptionWhenNotNumber= Long.valueOf(hits);
+				hitsValue = Integer.MAX_VALUE;
+			}
+
+			builder.setHits(lineId, hitsValue);
+
+			String isBranch = line.getAttrValue("branch");
+			String text = line.getAttrValue("condition-coverage");
+			if (StringUtils.equals(isBranch, "true")
+					&& StringUtils.isNotBlank(text)) {
+				String[] conditions = StringUtils.split(
+						StringUtils.substringBetween(text, "(", ")"), "/");
+				builder.setConditions(lineId, Integer.parseInt(conditions[1]),
+						Integer.parseInt(conditions[0]));
+			}
+		}
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

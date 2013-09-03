@@ -55,12 +55,15 @@ public class CxxCoverageSensor extends CxxReportSensor {
 
 	private static List<CoverageParser> parsers = new LinkedList<CoverageParser>();
 
+	static{
+		parsers.add(new CoberturaParser());
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	public CxxCoverageSensor(Settings settings) {
 		super(settings);
-		parsers.add(new CoberturaParser());
 	}
 
 	/**
