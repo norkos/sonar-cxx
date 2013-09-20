@@ -36,6 +36,7 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.SonarException;
 import org.sonar.plugins.cxx.CxxLanguage;
+import org.sonar.plugins.cxx.Excluder;
 import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
@@ -113,7 +114,7 @@ public class CxxCoverageGuard extends CxxReportSensor {
 				CxxLanguage.KEY);
 
 		GuardStrategy noCoverageProvided = new NoCoverage();
-		CoverageExcluder excluder = new CoberturaExcluder(conf);
+		Excluder excluder = new CoverageExcluder(conf);
 
 		for (InputFile inputFile : sources) {
 			File file = inputFile.getFile();

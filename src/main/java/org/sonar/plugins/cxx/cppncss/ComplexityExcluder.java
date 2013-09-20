@@ -17,18 +17,17 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.coverage;
+package org.sonar.plugins.cxx.cppncss;
 
 import org.sonar.api.config.Settings;
 import org.sonar.plugins.cxx.Excluder;
 
-public class CoverageExcluder extends Excluder {
+public class ComplexityExcluder extends Excluder {
 
-	public static final String COVERAGE_EXDLUDED_DIRECTORIES = "sonar.cxx.coverage.excluded";
+	public static final String COMPLEXITY_EXDLUDED_DIRECTORIES = "sonar.cxx.complexity.excluded";
 
-	public CoverageExcluder(Settings conf) {
-		super(COVERAGE_EXDLUDED_DIRECTORIES, conf);
+	public ComplexityExcluder(Settings conf) {
+		super(COMPLEXITY_EXDLUDED_DIRECTORIES, conf);
 	}
-
 
 }

@@ -37,6 +37,8 @@ import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.StaxParser;
+import org.sonar.plugins.cxx.Excluder;
+import org.sonar.plugins.cxx.coverage.CoverageExcluder;
 import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
@@ -81,8 +83,11 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 			final SensorContext context, File report)
 			throws javax.xml.stream.XMLStreamException {
 
-		final int maxComplexity = getParam(DEFAULT_MAX_COMPLEXITY, FUNCTION_COMPLEXITY);
+		final int maxComplexity = getParam(DEFAULT_MAX_COMPLEXITY,
+				FUNCTION_COMPLEXITY);
 		final int maxSize = getParam(DEFAULT_MAX_SIZE, FUNCTION_SIZE);
+
+		final Excluder excluder = new ComplexityExcluder(conf);
 
 		try {
 			StaxParser parser = new StaxParser(
@@ -102,8 +107,15 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 							}
 
 							for (FileData fileData : files.values()) {
-								saveMetrics(project, context, fileData,
-										maxComplexity, maxSize);
+								if (!excluder.isExcluded(fileData.getFile())) {
+									saveMetrics(project, context, fileData,
+											maxComplexity, maxSize);
+								} else {
+									CxxUtils.LOG.debug(
+											"Ignoring coverage measures '{}'",
+											fileData.getFile()
+													.getAbsolutePath());
+								}
 							}
 						}
 					});
@@ -326,17 +338,21 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 	}
 
 	private static class FileData {
-		private String name;
 		private int noMethods = 0;
 		private Map<String, ClassData> classes = new HashMap<String, ClassData>();
 		private int complexity = 0;
+		private File file;
 
 		FileData(String name) {
-			this.name = name;
+			this.file = new File(name);
 		}
 
 		public String getName() {
-			return name;
+			return file.getAbsolutePath();
+		}
+
+		public File getFile() {
+			return file;
 		}
 
 		public int getNoMethods() {

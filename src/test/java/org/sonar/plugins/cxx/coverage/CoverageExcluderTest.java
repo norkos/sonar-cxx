@@ -36,15 +36,15 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.plugins.cxx.TestUtils;
 
-public class CoberturaExcluderTest {
+public class CoverageExcluderTest {
 
 	@Test
 	public void testExcluded() {
 		String directories = "var,log";
 		Settings settings = new Settings();
 		settings.appendProperty(
-				CoberturaExcluder.COVERAGE_EXDLUDED_DIRECTORIES, directories);
-		CoberturaExcluder excluder = new CoberturaExcluder(settings);
+				CoverageExcluder.COVERAGE_EXDLUDED_DIRECTORIES, directories);
+		CoverageExcluder excluder = new CoverageExcluder(settings);
 
 		File exluded = new File("/var/nk/file.txt");
 		File exluded2 = new File("/nk/log/nk/file.txt");
@@ -58,7 +58,7 @@ public class CoberturaExcluderTest {
 	@Test
 	public void testNoExcludedProperties() {
 		Settings settings = new Settings();
-		CoberturaExcluder excluder = new CoberturaExcluder(settings);
+		CoverageExcluder excluder = new CoverageExcluder(settings);
 
 		File included = new File("/var/nk/file.txt");
 		assertFalse(excluder.isExcluded(included));
@@ -69,8 +69,8 @@ public class CoberturaExcluderTest {
 		String directories = "var,log";
 		Settings settings = new Settings();
 		settings.appendProperty(
-				CoberturaExcluder.COVERAGE_EXDLUDED_DIRECTORIES, directories);
-		CoberturaExcluder excluder = new CoberturaExcluder(settings);
+				CoverageExcluder.COVERAGE_EXDLUDED_DIRECTORIES, directories);
+		CoverageExcluder excluder = new CoverageExcluder(settings);
 
 		File included = new File("/var1/nk/file.txt");
 		File included2 = new File("/nk/log1/nk/file.txt");

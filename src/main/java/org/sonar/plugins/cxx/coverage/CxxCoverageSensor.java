@@ -34,6 +34,7 @@ import org.sonar.api.measures.CoverageMeasuresBuilder;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
+import org.sonar.plugins.cxx.Excluder;
 import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
@@ -129,7 +130,7 @@ public class CxxCoverageSensor extends CxxReportSensor {
 	private void saveMeasures(Project project, SensorContext context,
 			Map<String, CoverageMeasuresBuilder> coverageMeasures,
 			int coveragetype) {
-		CoverageExcluder excluder = new CoberturaExcluder(conf);
+		Excluder excluder = new CoverageExcluder(conf);
 
 		for (Map.Entry<String, CoverageMeasuresBuilder> entry : coverageMeasures
 				.entrySet()) {
@@ -157,7 +158,7 @@ public class CxxCoverageSensor extends CxxReportSensor {
 				}
 			} else {
 				CxxUtils.LOG
-						.debug("Cannot find the file '{}', ignoring coverage measures",
+						.debug("Cannot find the file '{}'or ignoring coverage measures",
 								filePath);
 			}
 		}

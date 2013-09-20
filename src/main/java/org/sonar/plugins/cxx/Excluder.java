@@ -17,7 +17,7 @@
  * License along with Sonar Cxx Plugin; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package org.sonar.plugins.cxx.coverage;
+package org.sonar.plugins.cxx;
 
 import java.io.File;
 import java.util.HashSet;
@@ -26,12 +26,13 @@ import java.util.Set;
 import org.sonar.api.config.Settings;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 
-public class CoberturaExcluder implements CoverageExcluder {
+public abstract class Excluder {
 
-	public static final String COVERAGE_EXDLUDED_DIRECTORIES = "sonar.cxx.coverage.excluded";
 	private Set<String> directories;
+	private String excluded;
 
-	public CoberturaExcluder(Settings conf) {
+	public Excluder(String excluded, Settings conf) {
+		this.excluded = excluded;
 		directories = getExcludedDirectories(conf);
 	}
 
@@ -55,18 +56,18 @@ public class CoberturaExcluder implements CoverageExcluder {
 	private Set<String> getExcludedDirectories(Settings conf) {
 		Set<String> result = new HashSet<String>();
 
-		String value = conf.getString(COVERAGE_EXDLUDED_DIRECTORIES);
+		String value = conf.getString(excluded);
 		if (value == null) {
 			return result;
 		}
 		for (String dir : value.trim().split(",")) {
-			CxxUtils.LOG.debug("Ignore direcory while coverage calculations '{}'",
+			CxxUtils.LOG.debug("Ignore direcory while "
+					+ this.getClass().getSimpleName() + "  calculations '{}'",
 					dir);
-			
+
 			result.add(dir);
 		}
-		
+
 		return result;
 	}
-
 }
