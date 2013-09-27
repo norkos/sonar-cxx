@@ -42,6 +42,8 @@ import org.sonar.plugins.cxx.utils.CxxUtils;
 
 public class CxxCoverageGuard extends CxxReportSensor {
 
+	public static final String NO_COVERAGE = "sonar.cxx.noCoverage";
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -113,6 +115,13 @@ public class CxxCoverageGuard extends CxxReportSensor {
 		final List<InputFile> sources = project.getFileSystem().mainFiles(
 				CxxLanguage.KEY);
 
+		String value = conf.getString(NO_COVERAGE);
+		if(value != null && Boolean.parseBoolean(value)){
+			CxxUtils.LOG.debug("Project '{}' excluded from coverage guard",
+					project.getName());
+			return;
+		}
+		
 		GuardStrategy noCoverageProvided = new NoCoverage();
 		Excluder excluder = new CoverageExcluder(conf);
 
