@@ -226,6 +226,7 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		CxxCppNcssFile file = new CxxCppNcssFile(fullFileName,
 				org.sonar.plugins.cxx.utils.CxxOsValidator.getOSType());
 		String fileName = file.getFileName();
+		int lineNumber = file.getLine();
 
 		FileData fileData = files.get(fileName);
 		if (fileData == null) {
@@ -237,7 +238,7 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		Pair<String /* ncss */, String /* cnn */> functionValues = stringValueOfChildWithIndex(
 				valueCursor, ncssIndex, ccnIndex);
 
-		fileData.addMethod(className, funcName,
+		fileData.addMethod(className, funcName, lineNumber,
 				Integer.parseInt(functionValues.getTail().trim()),
 				Integer.parseInt(functionValues.getHead().trim()));
 	}
@@ -300,7 +301,8 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 					if (complexity > maxComplexity) {
 						CxxUtils.LOG.debug("Complexity to big '{}'", filePath);
 						saveViolation(project, context,
-								CxxCppNcssRuleRepository.KEY, filePath, 1,
+								CxxCppNcssRuleRepository.KEY, filePath,
+								function.getLineNumber(),
 								CxxCppNcssRuleRepository.FUNCTION_COMPLEXITY,
 								"Complexity of method " + name + " was "
 										+ complexity + " when limit is "
@@ -311,7 +313,8 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 						CxxUtils.LOG.debug("Size of method too big '{}'",
 								filePath);
 						saveViolation(project, context,
-								CxxCppNcssRuleRepository.KEY, filePath, 1,
+								CxxCppNcssRuleRepository.KEY, filePath,
+								function.getLineNumber(),
 								CxxCppNcssRuleRepository.FUNCTION_SIZE,
 								"Size of method " + name + " was " + size
 										+ " when limit is " + maxSize);
@@ -381,7 +384,7 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		 *            method size
 		 */
 		public void addMethod(String className, String methodName,
-				int complexity, int size) {
+				int lineNumber, int complexity, int size) {
 			noMethods++;
 			this.complexity += complexity;
 
@@ -390,14 +393,21 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 				classData = new ClassData();
 				classes.put(className, classData);
 			}
-			classData.addMethod(methodName, complexity, size);
+			classData.addMethod(methodName, lineNumber, complexity, size);
 		}
 	}
 
 	private static class FunctionData {
-		public FunctionData(int complexity, int size) {
+		private int lineNumber;
+
+		public FunctionData(int lineNumber, int complexity, int size) {
+			this.lineNumber = lineNumber;
 			this.complexity = complexity;
 			this.size = size;
+		}
+
+		public int getLineNumber() {
+			return lineNumber;
 		}
 
 		private int complexity = 0;
@@ -424,9 +434,11 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		 * @param complexity
 		 *            The complexity number to store
 		 */
-		public void addMethod(String name, int complexity, int size) {
+		public void addMethod(String name, int lineNumber, int complexity,
+				int size) {
 			this.complexity += complexity;
-			methodComplexities.put(name, new FunctionData(complexity, size));
+			methodComplexities.put(name, new FunctionData(lineNumber,
+					complexity, size));
 		}
 
 		public Integer getComplexity() {

@@ -128,7 +128,7 @@ public abstract class CxxReportSensor implements Sensor {
   }
 
   protected void saveViolation(Project project, SensorContext context, String ruleRepoKey,
-                               String file, int line, String ruleId, String msg) {
+                               String file, Integer line, String ruleId, String msg) {
     RuleQuery ruleQuery = RuleQuery.create()
       .withRepositoryKey(ruleRepoKey)
       .withKey(ruleId);
