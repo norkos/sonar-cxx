@@ -20,17 +20,16 @@
 package org.sonar.plugins.cxx.cppncss;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.profiles.RulesProfile;
@@ -38,9 +37,13 @@ import org.sonar.api.resources.Project;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.StaxParser;
 import org.sonar.plugins.cxx.Excluder;
-import org.sonar.plugins.cxx.coverage.CoverageExcluder;
+import org.sonar.plugins.cxx.cppncss.dao.ClassData;
+import org.sonar.plugins.cxx.cppncss.dao.FileData;
+import org.sonar.plugins.cxx.cppncss.dao.FunctionData;
+import org.sonar.plugins.cxx.cppncss.metrics.CppNcssMetrics;
 import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
+import org.sonar.plugins.cxx.utils.Pair;
 
 /**
  * {@inheritDoc}
@@ -142,24 +145,6 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		String type = measureCursor.getAttrValue("type");
 		if (type.equalsIgnoreCase("function")) {
 			collectFunctions(measureCursor, files);
-		}
-	}
-
-	private final static class Pair<A, B> {
-		private A a;
-		private B b;
-
-		public Pair(A a, B b) {
-			this.a = a;
-			this.b = b;
-		}
-
-		A getHead() {
-			return a;
-		}
-
-		B getTail() {
-			return b;
 		}
 	}
 
@@ -274,6 +259,8 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 			CxxUtils.LOG.debug("Saving complexity measures for file '{}'",
 					filePath);
 
+			addDistances(file, fileData, context,maxComplexity , maxSize);
+
 			RangeDistributionBuilder complexityMethodsDistribution = new RangeDistributionBuilder(
 					CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION,
 					METHODS_DISTRIB_BOTTOM_LIMITS);
@@ -289,11 +276,11 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 
 				complexityClassDistribution.add(classData.getComplexity());
 
-				for (Entry<String, FunctionData> functions : classData
-						.getMethods()) {
+				for (Entry<Pair<String, Integer>, FunctionData> functions : classData
+						.getMethodsWithNames()) {
 
 					FunctionData function = functions.getValue();
-					String name = functions.getKey();
+					String name = functions.getKey().getHead();
 
 					int complexity = function.getComplexity();
 					int size = function.getSize();
@@ -340,114 +327,32 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		}
 	}
 
-	private static class FileData {
-		private int noMethods = 0;
-		private Map<String, ClassData> classes = new HashMap<String, ClassData>();
-		private int complexity = 0;
-		private File file;
+	private void addDistances(org.sonar.api.resources.File resource, FileData fileData, SensorContext context, int maxComplexity, int maxSize) {
+		Pair<Integer, Integer> distances = DistanceCalculator.calculate(
+				fileData, maxComplexity, maxSize);
 
-		FileData(String name) {
-			this.file = new File(name);
+		/** compexity */
+		if (distances.getHead().intValue() > 0) {
+			CxxUtils.LOG.debug("Saving distnace complexity '{}'",
+					distances.getHead());
+
+			final Measure measure = new Measure(
+					CppNcssMetrics.DISTANCE_COMPLEXITY_LENGTH, distances
+							.getHead().doubleValue());
+			context.saveMeasure(resource, measure);
 		}
 
-		public String getName() {
-			return file.getAbsolutePath();
+		/** size */
+		if (distances.getTail().intValue() > 0) {
+			CxxUtils.LOG.debug("Saving distnace length '{}'",
+					distances.getTail());
+
+			final Measure measure = new Measure(
+					CppNcssMetrics.DISTANCE_METHOD_LENGTH, distances.getTail()
+							.doubleValue());
+			context.saveMeasure(resource, measure);
 		}
 
-		public File getFile() {
-			return file;
-		}
-
-		public int getNoMethods() {
-			return noMethods;
-		}
-
-		public int getComplexity() {
-			return complexity;
-		}
-
-		/** @return data for classes contained in this file */
-		public Collection<ClassData> getClasses() {
-			return classes.values();
-		}
-
-		/**
-		 * Adds complexity data for a method with given name in a given class
-		 * 
-		 * @param className
-		 *            Name of method's class
-		 * @param methodName
-		 *            The name of the method to add data for
-		 * @param complexity
-		 *            The complexity number to store
-		 * @param size
-		 *            method size
-		 */
-		public void addMethod(String className, String methodName,
-				int lineNumber, int complexity, int size) {
-			noMethods++;
-			this.complexity += complexity;
-
-			ClassData classData = classes.get(className);
-			if (classData == null) {
-				classData = new ClassData();
-				classes.put(className, classData);
-			}
-			classData.addMethod(methodName, lineNumber, complexity, size);
-		}
 	}
 
-	private static class FunctionData {
-		private int lineNumber;
-
-		public FunctionData(int lineNumber, int complexity, int size) {
-			this.lineNumber = lineNumber;
-			this.complexity = complexity;
-			this.size = size;
-		}
-
-		public int getLineNumber() {
-			return lineNumber;
-		}
-
-		private int complexity = 0;
-		private int size = 0;
-
-		public int getComplexity() {
-			return complexity;
-		}
-
-		public int getSize() {
-			return size;
-		}
-	}
-
-	private static class ClassData {
-		private Map<String, FunctionData> methodComplexities = new HashMap<String, FunctionData>();
-		private int complexity = 0;
-
-		/**
-		 * Adds complexity data for a method with given name
-		 * 
-		 * @param name
-		 *            The name of the method to add data for
-		 * @param complexity
-		 *            The complexity number to store
-		 */
-		public void addMethod(String name, int lineNumber, int complexity,
-				int size) {
-			this.complexity += complexity;
-			methodComplexities.put(name, new FunctionData(lineNumber,
-					complexity, size));
-		}
-
-		public Integer getComplexity() {
-			return complexity;
-		}
-
-		/** @return complexity numbers for methods inside of this class */
-		public Set<Entry<String, FunctionData>> getMethods() {
-			return methodComplexities.entrySet();
-		}
-	}
 }
