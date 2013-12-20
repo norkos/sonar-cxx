@@ -22,6 +22,7 @@ package org.sonar.plugins.cxx.utils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.tools.ant.DirectoryScanner;
 import org.sonar.api.batch.Sensor;
 import org.sonar.api.batch.SensorContext;
@@ -38,122 +39,152 @@ import org.sonar.plugins.cxx.CxxLanguage;
  * {@inheritDoc}
  */
 public abstract class CxxReportSensor implements Sensor {
-  private RuleFinder ruleFinder;
-  protected Settings conf = null;
+	private RuleFinder ruleFinder;
+	protected Settings conf = null;
 
-  public CxxReportSensor() {}
-  
+	public CxxReportSensor() {
+	}
 
-  /**
-   * {@inheritDoc}
-   */
-  public CxxReportSensor(Settings conf) {
-    this.conf = conf;
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	public CxxReportSensor(Settings conf) {
+		this.conf = conf;
+	}
 
-  /**
-   * {@inheritDoc}
-   */
-  public CxxReportSensor(RuleFinder ruleFinder, Settings conf) {
-    this.ruleFinder = ruleFinder;
-    this.conf = conf;
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	public CxxReportSensor(RuleFinder ruleFinder, Settings conf) {
+		this.ruleFinder = ruleFinder;
+		this.conf = conf;
+	}
 
-  
-  protected RuleFinder getRuleFinder() {
-	return ruleFinder;
-}
-  /**
-   * {@inheritDoc}
-   */
-  public boolean shouldExecuteOnProject(Project project) {
-    return CxxLanguage.KEY.equals(project.getLanguageKey());
-  }
+	protected RuleFinder getRuleFinder() {
+		return ruleFinder;
+	}
 
-  /**
-   * {@inheritDoc}
-   */
-  public void analyse(Project project, SensorContext context) {
-    try {
-      List<File> reports = getReports(conf, project.getFileSystem().getBasedir().getPath(),
-                                      reportPathKey(), defaultReportPath());
-      for (File report : reports) {
-        CxxUtils.LOG.info("Processing report '{}'", report);
-        processReport(project, context, report);
-      }
-      
-      if (reports.isEmpty()) {
-        handleNoReportsCase(context);
-      }
-    } catch (Exception e) {
-      String msg = new StringBuilder()
-        .append("Cannot feed the data into sonar, details: '")
-        .append(e)
-        .append("'")
-        .toString();
-      throw new SonarException(msg, e);
-    }
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean shouldExecuteOnProject(Project project) {
+		return CxxLanguage.KEY.equals(project.getLanguageKey());
+	}
 
-  @Override
-  public String toString() {
-    return getClass().getSimpleName();
-  }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void analyse(Project project, SensorContext context) {
+		try {
+			List<File> reports = getReports(conf, project.getFileSystem()
+					.getBasedir().getPath(), reportPathKey(),
+					defaultReportPath());
+			for (File report : reports) {
+				CxxUtils.LOG.info("Processing report '{}'", report);
+				processReport(project, context, report);
+			}
 
-  protected List<File> getReports(Settings conf,
-                                  String baseDirPath,
-                                  String reportPathPropertyKey,
-                                  String defaultReportPath) {
-    String reportPath = conf.getString(reportPathPropertyKey);
-    if(reportPath == null){
-      reportPath = defaultReportPath;
-    }
-    
-    CxxUtils.LOG.debug("Using pattern '{}' to find reports", reportPath);
+			if (reports.isEmpty()) {
+				handleNoReportsCase(context);
+			}
+		} catch (Exception e) {
+			String msg = new StringBuilder()
+					.append("Cannot feed the data into sonar, details: '")
+					.append(e).append("'").toString();
+			throw new SonarException(msg, e);
+		}
+	}
 
-    DirectoryScanner scanner = new DirectoryScanner();
-    String[] includes = new String[1];
-    includes[0] = reportPath;
-    scanner.setIncludes(includes);
-    scanner.setBasedir(new File(baseDirPath));
-    scanner.scan();
-    String[] relPaths = scanner.getIncludedFiles();
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 
-    List<File> reports = new ArrayList<File>();
-    for (String relPath : relPaths) {
-      reports.add(new File(baseDirPath, relPath));
-    }
-    
-    return reports;
-  }
+	protected List<File> getReports(Settings conf, String baseDirPath,
+			String reportPathPropertyKey, String defaultReportPath) {
+		String reportPath = conf.getString(reportPathPropertyKey);
+		if (reportPath == null) {
+			reportPath = defaultReportPath;
+		}
 
-  protected void saveViolation(Project project, SensorContext context, String ruleRepoKey,
-                               String file, Integer line, String ruleId, String msg) {
-    RuleQuery ruleQuery = RuleQuery.create()
-      .withRepositoryKey(ruleRepoKey)
-      .withKey(ruleId);
-    Rule rule = ruleFinder.find(ruleQuery);
-    if (rule != null) {
-      org.sonar.api.resources.File resource =
-        org.sonar.api.resources.File.fromIOFile(new File(file), project);
-      if (context.getResource(resource) != null) {
-        Violation violation = Violation.create(rule, resource).setLineId(line).setMessage(msg);
-        context.saveViolation(violation);
-      } else {
-        CxxUtils.LOG.debug("Cannot find the file '{}', skipping violation '{}'", file, msg);
-      }
-    } else {
-      CxxUtils.LOG.warn("Cannot find the rule {}, skipping violation", ruleId);
-    }
-  }
-  
-  protected void processReport(Project project, SensorContext context, File report)
-    throws Exception
-  {}
+		CxxUtils.LOG.debug("Using pattern '{}' to find reports", reportPath);
 
-  protected void handleNoReportsCase(SensorContext context) {}
-  
-  protected String reportPathKey() { return ""; };
-  
-  protected String defaultReportPath() { return ""; };
+		DirectoryScanner scanner = new DirectoryScanner();
+		String[] includes = new String[1];
+		includes[0] = reportPath;
+		scanner.setIncludes(includes);
+		scanner.setBasedir(new File(baseDirPath));
+		scanner.scan();
+		String[] relPaths = scanner.getIncludedFiles();
+
+		List<File> reports = new ArrayList<File>();
+		for (String relPath : relPaths) {
+			reports.add(new File(baseDirPath, relPath));
+		}
+
+		return reports;
+	}
+
+	protected void saveViolation(Project project, SensorContext context,
+			String ruleRepoKey, String file, Integer line, String ruleId,
+			String msg) {
+		RuleQuery ruleQuery = RuleQuery.create().withRepositoryKey(ruleRepoKey)
+				.withKey(ruleId);
+		Rule rule = ruleFinder.find(ruleQuery);
+		if (rule != null) {
+			org.sonar.api.resources.File resource = org.sonar.api.resources.File
+					.fromIOFile(new File(file), project);
+			if (context.getResource(resource) != null) {
+				Violation violation = Violation.create(rule, resource)
+						.setLineId(line).setMessage(msg);
+				context.saveViolation(violation);
+			} else {
+				CxxUtils.LOG.debug(
+						"Cannot find the file '{}', skipping violation '{}'",
+						file, msg);
+			}
+		} else {
+			CxxUtils.LOG.warn("Cannot find the rule {}, skipping violation",
+					ruleId);
+		}
+	}
+
+	protected void saveViolation(Project project, SensorContext context,
+			String ruleRepoKey, String file, Integer line, String ruleId,
+			String msg, double cost) {
+		RuleQuery ruleQuery = RuleQuery.create().withRepositoryKey(ruleRepoKey)
+				.withKey(ruleId);
+		Rule rule = ruleFinder.find(ruleQuery);
+		if (rule != null) {
+			org.sonar.api.resources.File resource = org.sonar.api.resources.File
+					.fromIOFile(new File(file), project);
+			if (context.getResource(resource) != null) {
+				Violation violation = Violation.create(rule, resource)
+						.setLineId(line).setMessage(msg).setCost(cost);
+				context.saveViolation(violation);
+			} else {
+				CxxUtils.LOG.debug(
+						"Cannot find the file '{}', skipping violation '{}'",
+						file, msg);
+			}
+		} else {
+			CxxUtils.LOG.warn("Cannot find the rule {}, skipping violation",
+					ruleId);
+		}
+	}
+
+	protected void processReport(Project project, SensorContext context,
+			File report) throws Exception {
+	}
+
+	protected void handleNoReportsCase(SensorContext context) {
+	}
+
+	protected String reportPathKey() {
+		return "";
+	};
+
+	protected String defaultReportPath() {
+		return "";
+	};
 }

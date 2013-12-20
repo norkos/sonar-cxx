@@ -293,7 +293,7 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 								CxxCppNcssRuleRepository.FUNCTION_COMPLEXITY,
 								"Complexity of method " + name + " was "
 										+ complexity + " when limit is "
-										+ maxComplexity);
+										+ maxComplexity, complexity - maxComplexity);
 					}
 
 					if (size > maxSize) {
@@ -304,7 +304,7 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 								function.getLineNumber(),
 								CxxCppNcssRuleRepository.FUNCTION_SIZE,
 								"Size of method " + name + " was " + size
-										+ " when limit is " + maxSize);
+										+ " when limit is " + maxSize, size - maxSize);
 					}
 					complexityMethodsDistribution.add(complexity);
 				}
