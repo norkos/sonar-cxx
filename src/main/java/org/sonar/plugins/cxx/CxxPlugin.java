@@ -32,7 +32,8 @@ import org.sonar.plugins.cxx.cppcheck.CxxCppCheckRuleRepository;
 import org.sonar.plugins.cxx.cppcheck.CxxCppCheckSensor;
 import org.sonar.plugins.cxx.cppncss.CxxCppNcssRuleRepository;
 import org.sonar.plugins.cxx.cppncss.CxxCppNcssSensor;
-import org.sonar.plugins.cxx.cppncss.metrics.CppNcssMetrics;
+import org.sonar.plugins.cxx.distance.DistanceMetrics;
+import org.sonar.plugins.cxx.distance.DistanceDecorator;
 import org.sonar.plugins.cxx.externalrules.CxxExternalRulesRuleRepository;
 import org.sonar.plugins.cxx.externalrules.CxxExternalRulesSensor;
 import org.sonar.plugins.cxx.squid.CxxSquidSensor;
@@ -128,7 +129,8 @@ public final class CxxPlugin extends SonarPlugin {
     l.add(CxxExternalRulesSensor.class);
     l.add(CxxExternalRulesRuleRepository.class); 
     l.add(CxxCoverageGuard.class);
-    l.add(CppNcssMetrics.class);
+    l.add(DistanceDecorator.class);
+    l.add(DistanceMetrics.class);
 
     return l;
   }

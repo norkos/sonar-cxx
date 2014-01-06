@@ -29,7 +29,6 @@ import org.codehaus.staxmate.in.SMInputCursor;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.PersistenceMode;
 import org.sonar.api.measures.RangeDistributionBuilder;
 import org.sonar.api.profiles.RulesProfile;
@@ -40,7 +39,6 @@ import org.sonar.plugins.cxx.Excluder;
 import org.sonar.plugins.cxx.cppncss.dao.ClassData;
 import org.sonar.plugins.cxx.cppncss.dao.FileData;
 import org.sonar.plugins.cxx.cppncss.dao.FunctionData;
-import org.sonar.plugins.cxx.cppncss.metrics.CppNcssMetrics;
 import org.sonar.plugins.cxx.utils.CxxReportSensor;
 import org.sonar.plugins.cxx.utils.CxxUtils;
 import org.sonar.plugins.cxx.utils.Pair;
@@ -259,8 +257,6 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 			CxxUtils.LOG.debug("Saving complexity measures for file '{}'",
 					filePath);
 
-			addDistances(file, fileData, context,maxComplexity , maxSize);
-
 			RangeDistributionBuilder complexityMethodsDistribution = new RangeDistributionBuilder(
 					CoreMetrics.FUNCTION_COMPLEXITY_DISTRIBUTION,
 					METHODS_DISTRIB_BOTTOM_LIMITS);
@@ -327,32 +323,6 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		}
 	}
 
-	private void addDistances(org.sonar.api.resources.File resource, FileData fileData, SensorContext context, int maxComplexity, int maxSize) {
-		Pair<Integer, Integer> distances = DistanceCalculator.calculate(
-				fileData, maxComplexity, maxSize);
-
-		/** compexity */
-		if (distances.getHead().intValue() > 0) {
-			CxxUtils.LOG.debug("Saving distnace complexity '{}'",
-					distances.getHead());
-
-			final Measure measure = new Measure(
-					CppNcssMetrics.DISTANCE_COMPLEXITY_LENGTH, distances
-							.getHead().doubleValue());
-			context.saveMeasure(resource, measure);
-		}
-
-		/** size */
-		if (distances.getTail().intValue() > 0) {
-			CxxUtils.LOG.debug("Saving distnace length '{}'",
-					distances.getTail());
-
-			final Measure measure = new Measure(
-					CppNcssMetrics.DISTANCE_METHOD_LENGTH, distances.getTail()
-							.doubleValue());
-			context.saveMeasure(resource, measure);
-		}
-
-	}
+	
 
 }
