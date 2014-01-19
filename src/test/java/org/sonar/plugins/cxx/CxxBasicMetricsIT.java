@@ -30,12 +30,16 @@ import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
 //@Ignore
-public class CxxSampleProjectIT {
+
+/*
+ * Basic metrics, without specific violations and overruns.
+ */
+public class CxxBasicMetricsIT {
 
   private static Sonar sonar;
-  private static final String PROJECT_SAMPLE = "CxxPlugin:Sample";
-  private static final String DIR_UTILS = "CxxPlugin:Sample:lib";
-  private static final String FILE_CODECHUNKS = "CxxPlugin:Sample:lib/component1.cc";
+  private static final String PROJECT_SAMPLE = "CxxPlugin:Basic";
+  private static final String DIR_UTILS = "CxxPlugin:Basic:lib";
+  private static final String FILE_CODECHUNKS = "CxxPlugin:Basic:lib/component1.cc";
 
   @BeforeClass
   public static void buildServer() {
@@ -44,7 +48,7 @@ public class CxxSampleProjectIT {
 
   @Test
   public void cxxSampleIsAnalyzed() {
-    assertThat(sonar.find(new ResourceQuery(PROJECT_SAMPLE)).getName(), is("Sample"));
+    assertThat(sonar.find(new ResourceQuery(PROJECT_SAMPLE)).getName(), is("Basic"));
     assertThat(sonar.find(new ResourceQuery(PROJECT_SAMPLE)).getVersion(), is("0.0.1"));
     assertThat(sonar.find(new ResourceQuery(DIR_UTILS)).getName(), is("lib"));
     assertThat(sonar.find(new ResourceQuery(FILE_CODECHUNKS)).getName(), is("component1.cc"));
@@ -58,9 +62,10 @@ public class CxxSampleProjectIT {
        "comment_lines_density", "comment_lines", "comment_blank_lines", "commented_out_code_lines",
        "duplicated_lines_density", "duplicated_lines", "duplicated_blocks", "duplicated_files",
        "complexity", "function_complexity",
-      // "violations", "violations_density",
        "coverage", "line_coverage", "branch_coverage",
-       "test_success_density", "test_failures", "test_errors", "tests"
+       "test_success_density", "test_failures", "test_errors", "tests",
+       "distance-complexity", "distance-size", "distance-complexity-ratio", "distance-size-ratio",
+       "violations"
       };
 
     double[] values = new double[metricNames.length];
@@ -73,9 +78,10 @@ public class CxxSampleProjectIT {
                                28.9, 24.0, 10.0, 0.0,
                                67.8, 82.0, 2.0, 2.0,
                                7.0, 1.4,
-                            //   33.0, 0.0,
-                               42.0, 43.6, 36.4,
-                               60.0, 2.0, 0.0, 5.0};
+                               36.2, 37.0, 33.3,
+                               60.0, 2.0, 0.0, 5.0,
+                               0.0, 0.0, 0.0, 0.0,
+                               11.0};
 
     assertThat(values, is(expectedValues));
     assertThat(getProjectMeasure("function_complexity_distribution").getData(), is("1=3;2=2;4=0;6=0;8=0;10=0;12=0"));
@@ -89,7 +95,6 @@ public class CxxSampleProjectIT {
        "comment_lines_density", "comment_lines", "comment_blank_lines", "commented_out_code_lines",
        "duplicated_lines_density", "duplicated_lines", "duplicated_blocks", "duplicated_files",
        "complexity", "function_complexity",
-      // "violations", "violations_density",
        "coverage", "line_coverage", "branch_coverage"
       };
 
@@ -103,7 +108,6 @@ public class CxxSampleProjectIT {
                                31.6, 24.0, 10.0, 0.0,
                                73.2, 82.0, 2.0, 2.0,
                                6.0, 1.5,
-                      //         30.0, 0.0,
                                42.0, 43.6, 36.4};
     
     assertThat(values, is(expectedValues));
@@ -117,8 +121,8 @@ public class CxxSampleProjectIT {
        "files", "functions",
        "comment_lines_density", "comment_lines", "comment_blank_lines",
        "complexity", "function_complexity",
-      // "violations", "violations_density",
-       "coverage", "line_coverage", "branch_coverage"
+       "coverage", "line_coverage", "branch_coverage",
+       "distance-complexity", "distance-size", "distance-complexity-ratio", "distance-size-ratio"
       };
     
     double[] values = new double[metricNames.length];
@@ -130,8 +134,8 @@ public class CxxSampleProjectIT {
                                1.0, 2.0,
                                35.3, 12.0, 5.0,
                                3.0, 1.5,
-                       //        17.0, 0.0,
-                               84.0, 100.0, 50.0};
+                               84.0, 100.0, 50.0,
+                               0.0, 0.0, 0.0, 0.0};
     
     assertThat(values, is(expectedValues));
   }

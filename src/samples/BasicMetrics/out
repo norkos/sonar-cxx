@@ -1,0 +1,1009 @@
+cppcheck -v --enable=all --xml -Isrc src 2> /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/cppcheck-report.xml
+Checking src/cli/main.cc...
+1/3 files checked 8% done
+Checking src/lib/component1.cc...
+2/3 files checked 54% done
+Checking src/lib/component2.cc...
+3/3 files checked 100% done
+Checking usage of global functions..
+hfcca -X src > /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/cppncss-report.xml
+valgrind --xml=yes --xml-file=/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/valgrind-report.xml /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/test_component1 --gtest_output=xml:/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/xunit-report.xml
+Running main() from gtest_main.cc
+[==========] Running 4 tests from 1 test case.
+[----------] Global test environment set-up.
+[----------] 4 tests from Component1Test
+[ RUN      ] Component1Test.foo_successfull
+[       OK ] Component1Test.foo_successfull (18 ms)
+[ RUN      ] Component1Test.foo_failing
+test_component1.cc:18: Failure
+Value of: 112
+Expected: bar.foo()
+Which is: 111
+[  FAILED  ] Component1Test.foo_failing (73 ms)
+[ RUN      ] Component1Test.foo_throwing
+unknown file: Failure
+Unknown C++ exception thrown in the test body.
+[  FAILED  ] Component1Test.foo_throwing (122 ms)
+[ RUN      ] Component1Test.foo_leaking
+fired!!!
+[       OK ] Component1Test.foo_leaking (54 ms)
+[----------] 4 tests from Component1Test (300 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 1 test case ran. (371 ms total)
+[  PASSED  ] 2 tests.
+[  FAILED  ] 2 tests, listed below:
+[  FAILED  ] Component1Test.foo_failing
+[  FAILED  ] Component1Test.foo_throwing
+
+ 2 FAILED TESTS
+  YOU HAVE 1 DISABLED TEST
+
+gcovr -x -r . > /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/gcovr-report.xml
+sonar-runner -X
+SonarQube Runner 2.3
+Java 1.7.0_25 Oracle Corporation (32-bit)
+Linux 3.2.0-4-686-pae i386
+INFO: Error stacktraces are turned on.
+INFO: Runner configuration file: /etc/sonar-runner/conf/sonar-runner.properties
+INFO: Project configuration file: /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/sonar-project.properties
+INFO: Default locale: "en_US", source code encoding: "UTF-8"
+INFO: Work directory: /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/.sonar
+INFO: SonarQube Server 4.0-SNAPSHOT
+DEBUG: Download http://localhost:9000/batch/sonar-channel-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378336817-253
+DEBUG: Download http://localhost:9000/batch/sonar-java-api-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378336844-890
+DEBUG: Download http://localhost:9000/batch/sonar-squid-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378336883-165
+DEBUG: Download http://localhost:9000/batch/sonar-colorizer-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378336928-712
+DEBUG: Download http://localhost:9000/batch/sonar-deprecated-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378336963-268
+DEBUG: Download http://localhost:9000/batch/sonar-core-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378336980-485
+DEBUG: Download http://localhost:9000/batch/sonar-batch-maven-compat-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337094-196
+DEBUG: Download http://localhost:9000/batch/sonar-graph-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337411-400
+DEBUG: Download http://localhost:9000/batch/sonar-home-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337442-384
+DEBUG: Download http://localhost:9000/batch/sonar-plugin-api-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337488-161
+DEBUG: Download http://localhost:9000/batch/sonar-check-api-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337649-668
+DEBUG: Download http://localhost:9000/batch/sonar-duplications-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337657-516
+DEBUG: Download http://localhost:9000/batch/sonar-markdown-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337729-683
+DEBUG: Download http://localhost:9000/batch/sonar-batch-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378337767-132
+12:52:19.160 INFO  - Load batch settings
+12:52:19.189 DEBUG - Download: http://localhost:9000/batch_bootstrap/properties?dryRun=false (no proxy)
+12:52:19.376 INFO  - User cache: /home/kosmal/.sonar/cache
+12:52:19.378 DEBUG - Temporary directory: /tmp/sonar-batch60987849678709713930460320507689
+12:52:19.387 INFO  - Install plugins
+12:52:19.388 DEBUG - Download index of plugins
+12:52:19.388 DEBUG - Download: http://localhost:9000/deploy/plugins/index.txt (no proxy)
+12:52:19.435 DEBUG - Installing plugin findbugs into /tmp/sonar-batch60987849678709713930460320507689/plugins/findbugs
+12:52:19.818 DEBUG - Installing plugin jacoco into /tmp/sonar-batch60987849678709713930460320507689/plugins/jacoco
+12:52:19.862 DEBUG - Download /deploy/plugins/l10nen/sonar-l10n-en-plugin-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378339862-796
+12:52:19.869 DEBUG - Download: http://localhost:9000/deploy/plugins/l10nen/sonar-l10n-en-plugin-4.0-SNAPSHOT.jar (no proxy)
+12:52:19.920 DEBUG - Installing plugin l10nen into /tmp/sonar-batch60987849678709713930460320507689/plugins/l10nen
+12:52:19.923 DEBUG - Download /deploy/plugins/mavenbatch/sonar-maven-batch-plugin-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378339923-83
+12:52:19.924 DEBUG - Download: http://localhost:9000/deploy/plugins/mavenbatch/sonar-maven-batch-plugin-4.0-SNAPSHOT.jar (no proxy)
+12:52:19.938 DEBUG - Installing plugin mavenbatch into /tmp/sonar-batch60987849678709713930460320507689/plugins/mavenbatch
+12:52:19.946 DEBUG - Installing plugin surefire into /tmp/sonar-batch60987849678709713930460320507689/plugins/surefire
+12:52:19.952 DEBUG - Download /deploy/plugins/cpd/sonar-cpd-plugin-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378339952-719
+12:52:19.953 DEBUG - Download: http://localhost:9000/deploy/plugins/cpd/sonar-cpd-plugin-4.0-SNAPSHOT.jar (no proxy)
+12:52:19.960 DEBUG - Installing plugin cpd into /tmp/sonar-batch60987849678709713930460320507689/plugins/cpd
+12:52:19.980 DEBUG - Installing plugin cxx into /tmp/sonar-batch60987849678709713930460320507689/plugins/cxx
+12:52:20.314 DEBUG - Installing plugin checkstyle into /tmp/sonar-batch60987849678709713930460320507689/plugins/checkstyle
+12:52:20.524 DEBUG - Installing plugin pmd into /tmp/sonar-batch60987849678709713930460320507689/plugins/pmd
+12:52:20.765 DEBUG - Installing plugin java into /tmp/sonar-batch60987849678709713930460320507689/plugins/java
+12:52:20.784 DEBUG - Download /deploy/plugins/core/sonar-core-plugin-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378340784-231
+12:52:20.784 DEBUG - Download: http://localhost:9000/deploy/plugins/core/sonar-core-plugin-4.0-SNAPSHOT.jar (no proxy)
+12:52:20.836 DEBUG - Installing plugin core into /tmp/sonar-batch60987849678709713930460320507689/plugins/core
+12:52:20.865 DEBUG - Download /deploy/plugins/dbcleaner/sonar-dbcleaner-plugin-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378340864-490
+12:52:20.865 DEBUG - Download: http://localhost:9000/deploy/plugins/dbcleaner/sonar-dbcleaner-plugin-4.0-SNAPSHOT.jar (no proxy)
+12:52:20.884 DEBUG - Installing plugin dbcleaner into /tmp/sonar-batch60987849678709713930460320507689/plugins/dbcleaner
+12:52:20.901 DEBUG - Installing plugin squidjava into /tmp/sonar-batch60987849678709713930460320507689/plugins/squidjava
+12:52:21.155 DEBUG - Download /deploy/plugins/emailnotifications/sonar-email-notifications-plugin-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378341155-609
+12:52:21.156 DEBUG - Download: http://localhost:9000/deploy/plugins/emailnotifications/sonar-email-notifications-plugin-4.0-SNAPSHOT.jar (no proxy)
+12:52:21.244 DEBUG - Installing plugin emailnotifications into /tmp/sonar-batch60987849678709713930460320507689/plugins/emailnotifications
+12:52:21.449 DEBUG - Download /deploy/plugins/design/sonar-design-plugin-4.0-SNAPSHOT.jar to /home/kosmal/.sonar/cache/_tmp/1378378341448-831
+12:52:21.455 DEBUG - Download: http://localhost:9000/deploy/plugins/design/sonar-design-plugin-4.0-SNAPSHOT.jar (no proxy)
+12:52:21.515 DEBUG - Installing plugin design into /tmp/sonar-batch60987849678709713930460320507689/plugins/design
+12:52:22.399 INFO  - Install JDBC driver
+12:52:22.399 DEBUG - Download index of jdbc-driver
+12:52:22.399 DEBUG - Download: http://localhost:9000/deploy/jdbc-driver.txt (no proxy)
+12:52:22.464 WARN  - H2 database should be used for evaluation purpose only
+12:52:22.464 INFO  - Create JDBC datasource for jdbc:h2:tcp://localhost/sonar
+12:52:22.793 DEBUG - Testing JDBC connection
+12:52:24.166 DEBUG - Download: http://localhost:9000/api/server (no proxy)
+12:52:24.363 INFO  - Initializing Hibernate
+12:52:24.366 DEBUG - hibernate.generate_statistics: false
+12:52:24.367 DEBUG - hibernate.dialect: org.hibernate.dialect.H2Dialect
+12:52:24.367 DEBUG - hibernate.connection.provider_class: org.sonar.jpa.session.CustomHibernateConnectionProvider
+12:52:24.367 DEBUG - hibernate.hbm2ddl.auto: validate
+12:52:26.228 DEBUG - Loaded 2651 properties from l10n bundles
+12:52:29.769 INFO  - Load project settings
+12:52:29.769 DEBUG - Download: http://localhost:9000/batch_bootstrap/properties?project=CxxPlugin:Sample&amp;dryRun=false (no proxy)
+12:52:29.864 INFO  - Apply project exclusions
+12:52:30.048 DEBUG - Acquire semaphore on project : org.sonar.api.resources.Project@5db614[id=1,key=CxxPlugin:Sample,qualifier=TRK], with key batch-CxxPlugin:Sample
+12:52:30.091 INFO  - -------------  Scan Sample
+12:52:30.120 INFO  - Load module settings
+12:52:30.534 DEBUG - Available languages:
+12:52:30.534 DEBUG -   * c++ => "c++"
+12:52:30.534 DEBUG -   * Java => "java"
+12:52:31.793 INFO  - Quality profile : [name=Sonar C++ Profile,language=c++]
+12:52:31.841 INFO  - Excluded tests: 
+12:52:31.841 INFO  -   **/package-info.java
+12:52:31.893 DEBUG - ooo Using Connection [jdbc:h2:tcp://localhost/sonar, UserName=SONAR, H2 JDBC Driver]
+12:52:31.905 DEBUG - ==>  Preparing: select * from projects where id=? 
+12:52:31.988 DEBUG - ==> Parameters: 1(Long)
+12:52:32.034 DEBUG - ooo Using Connection [jdbc:h2:tcp://localhost/sonar, UserName=SONAR, H2 JDBC Driver]
+12:52:32.035 DEBUG - ==>  Preparing: update projects set name=?, long_name=?, description=?, scope=?, qualifier=?, kee=?, language=?, root_id=?, copy_resource_id=?, person_id=?, enabled=? where id=? 
+12:52:32.037 DEBUG - ==> Parameters: Sample(String), Sample(String), (String), PRJ(String), TRK(String), CxxPlugin:Sample(String), c++(String), null, null, null, true(Boolean), 1(Long)
+12:52:32.045 INFO  - Configure Maven plugins
+12:52:32.383 INFO  - Compare to previous analysis
+12:52:32.449 INFO  - Compare over 30 days (2013-08-06)
+12:52:32.495 INFO  - Compare to previous version
+12:52:33.061 DEBUG - Initializers : 
+12:52:33.062 INFO  - Base dir: /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2
+12:52:33.062 INFO  - Working dir: /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/.sonar
+12:52:33.062 INFO  - Source dirs: /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src
+12:52:33.062 INFO  - Test dirs: /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/tests/unittests
+12:52:33.062 INFO  - Source encoding: UTF-8, default locale: en_US
+12:52:33.075 DEBUG - NK language queryjava
+12:52:33.076 DEBUG - NK Get languagejava
+12:52:33.076 DEBUG - NK Get languagejava
+12:52:33.076 DEBUG - NK java SuffixFileFilter2
+12:52:33.076 DEBUG - NK1 .java
+12:52:33.076 DEBUG - NK1 .jav
+12:52:33.080 DEBUG - AG SuffixFileFilter
+12:52:33.092 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.092 DEBUG - NK File accepted component1.gcno
+12:52:33.092 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.092 DEBUG - AG component1.gcno
+12:52:33.093 DEBUG - AG SuffixFileFilter
+12:52:33.093 DEBUG - NK File NOT accepted component1.gcno
+12:52:33.094 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.095 DEBUG - NK File accepted component1.o
+12:52:33.095 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.095 DEBUG - AG component1.o
+12:52:33.095 DEBUG - AG SuffixFileFilter
+12:52:33.096 DEBUG - NK File NOT accepted component1.o
+12:52:33.096 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.096 DEBUG - NK File accepted component2.cc
+12:52:33.097 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.097 DEBUG - AG component2.cc
+12:52:33.097 DEBUG - AG SuffixFileFilter
+12:52:33.097 DEBUG - NK File NOT accepted component2.cc
+12:52:33.097 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.097 DEBUG - NK File accepted component1.gcda
+12:52:33.097 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.097 DEBUG - AG component1.gcda
+12:52:33.097 DEBUG - AG SuffixFileFilter
+12:52:33.097 DEBUG - NK File NOT accepted component1.gcda
+12:52:33.098 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.098 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.098 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.098 DEBUG - AG StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.098 DEBUG - AG SuffixFileFilter
+12:52:33.098 DEBUG - NK File NOT accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.098 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.098 DEBUG - NK File accepted component1.cc
+12:52:33.098 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.099 DEBUG - AG component1.cc
+12:52:33.099 DEBUG - AG SuffixFileFilter
+12:52:33.099 DEBUG - NK File NOT accepted component1.cc
+12:52:33.099 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.099 DEBUG - NK File accepted component1.hh
+12:52:33.099 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.099 DEBUG - AG component1.hh
+12:52:33.099 DEBUG - AG SuffixFileFilter
+12:52:33.109 DEBUG - NK File NOT accepted component1.hh
+12:52:33.110 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.110 DEBUG - NK File accepted File.inc
+12:52:33.111 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.112 DEBUG - AG File.inc
+12:52:33.112 DEBUG - AG SuffixFileFilter
+12:52:33.112 DEBUG - NK File NOT accepted File.inc
+12:52:33.113 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.113 DEBUG - NK File accepted Makefile
+12:52:33.113 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.113 DEBUG - AG Makefile
+12:52:33.113 DEBUG - AG SuffixFileFilter
+12:52:33.113 DEBUG - NK File NOT accepted Makefile
+12:52:33.113 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.113 DEBUG - NK File accepted Makefile
+12:52:33.113 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.113 DEBUG - AG Makefile
+12:52:33.114 DEBUG - AG SuffixFileFilter
+12:52:33.114 DEBUG - NK File NOT accepted Makefile
+12:52:33.114 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.114 DEBUG - NK File accepted Makefile
+12:52:33.114 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.114 DEBUG - AG Makefile
+12:52:33.114 DEBUG - AG SuffixFileFilter
+12:52:33.114 DEBUG - NK File NOT accepted Makefile
+12:52:33.115 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.115 DEBUG - NK File accepted main.o
+12:52:33.115 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.115 DEBUG - AG main.o
+12:52:33.115 DEBUG - AG SuffixFileFilter
+12:52:33.115 DEBUG - NK File NOT accepted main.o
+12:52:33.115 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.115 DEBUG - NK File accepted main.cc
+12:52:33.115 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.115 DEBUG - AG main.cc
+12:52:33.115 DEBUG - AG SuffixFileFilter
+12:52:33.116 DEBUG - NK File NOT accepted main.cc
+12:52:33.116 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.116 DEBUG - NK File accepted main.gcno
+12:52:33.116 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.116 DEBUG - AG main.gcno
+12:52:33.116 DEBUG - AG SuffixFileFilter
+12:52:33.116 DEBUG - NK File NOT accepted main.gcno
+12:52:33.117 DEBUG - NK language queryjava
+12:52:33.117 DEBUG - NK Get languagejava
+12:52:33.117 DEBUG - NK Get languagejava
+12:52:33.117 DEBUG - NK java SuffixFileFilter2
+12:52:33.119 DEBUG - NK1 .java
+12:52:33.119 DEBUG - NK1 .jav
+12:52:33.119 DEBUG - AG SuffixFileFilter
+12:52:33.123 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.123 DEBUG - NK File accepted component1.gcno
+12:52:33.123 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.124 DEBUG - AG component1.gcno
+12:52:33.124 DEBUG - AG SuffixFileFilter
+12:52:33.124 DEBUG - NK File NOT accepted component1.gcno
+12:52:33.124 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.124 DEBUG - NK File accepted component1.o
+12:52:33.124 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.124 DEBUG - AG component1.o
+12:52:33.124 DEBUG - AG SuffixFileFilter
+12:52:33.124 DEBUG - NK File NOT accepted component1.o
+12:52:33.124 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.124 DEBUG - NK File accepted component2.cc
+12:52:33.124 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.125 DEBUG - AG component2.cc
+12:52:33.125 DEBUG - AG SuffixFileFilter
+12:52:33.130 DEBUG - NK File NOT accepted component2.cc
+12:52:33.130 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.131 DEBUG - NK File accepted component1.gcda
+12:52:33.133 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.133 DEBUG - AG component1.gcda
+12:52:33.133 DEBUG - AG SuffixFileFilter
+12:52:33.133 DEBUG - NK File NOT accepted component1.gcda
+12:52:33.133 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.133 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.133 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.134 DEBUG - AG StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.134 DEBUG - AG SuffixFileFilter
+12:52:33.134 DEBUG - NK File NOT accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.134 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.134 DEBUG - NK File accepted component1.cc
+12:52:33.134 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.134 DEBUG - AG component1.cc
+12:52:33.134 DEBUG - AG SuffixFileFilter
+12:52:33.134 DEBUG - NK File NOT accepted component1.cc
+12:52:33.135 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.135 DEBUG - NK File accepted component1.hh
+12:52:33.135 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.135 DEBUG - AG component1.hh
+12:52:33.135 DEBUG - AG SuffixFileFilter
+12:52:33.135 DEBUG - NK File NOT accepted component1.hh
+12:52:33.135 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.135 DEBUG - NK File accepted File.inc
+12:52:33.136 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.136 DEBUG - AG File.inc
+12:52:33.136 DEBUG - AG SuffixFileFilter
+12:52:33.136 DEBUG - NK File NOT accepted File.inc
+12:52:33.136 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.136 DEBUG - NK File accepted Makefile
+12:52:33.136 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.136 DEBUG - AG Makefile
+12:52:33.136 DEBUG - AG SuffixFileFilter
+12:52:33.136 DEBUG - NK File NOT accepted Makefile
+12:52:33.136 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.136 DEBUG - NK File accepted Makefile
+12:52:33.136 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.137 DEBUG - AG Makefile
+12:52:33.137 DEBUG - AG SuffixFileFilter
+12:52:33.137 DEBUG - NK File NOT accepted Makefile
+12:52:33.137 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.137 DEBUG - NK File accepted Makefile
+12:52:33.137 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.137 DEBUG - AG Makefile
+12:52:33.137 DEBUG - AG SuffixFileFilter
+12:52:33.138 DEBUG - NK File NOT accepted Makefile
+12:52:33.138 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.138 DEBUG - NK File accepted main.o
+12:52:33.138 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.143 DEBUG - AG main.o
+12:52:33.143 DEBUG - AG SuffixFileFilter
+12:52:33.144 DEBUG - NK File NOT accepted main.o
+12:52:33.144 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.144 DEBUG - NK File accepted main.cc
+12:52:33.144 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.144 DEBUG - AG main.cc
+12:52:33.144 DEBUG - AG SuffixFileFilter
+12:52:33.144 DEBUG - NK File NOT accepted main.cc
+12:52:33.144 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.144 DEBUG - NK File accepted main.gcno
+12:52:33.144 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.144 DEBUG - AG main.gcno
+12:52:33.144 DEBUG - AG SuffixFileFilter
+12:52:33.145 DEBUG - NK File NOT accepted main.gcno
+12:52:33.145 DEBUG - NK language queryjava
+12:52:33.149 DEBUG - NK Get languagejava
+12:52:33.149 DEBUG - NK Get languagejava
+12:52:33.149 DEBUG - NK java SuffixFileFilter2
+12:52:33.149 DEBUG - NK1 .java
+12:52:33.149 DEBUG - NK1 .jav
+12:52:33.150 DEBUG - AG SuffixFileFilter
+12:52:33.150 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.150 DEBUG - NK File accepted test_component1.o
+12:52:33.151 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.151 DEBUG - AG test_component1.o
+12:52:33.151 DEBUG - AG SuffixFileFilter
+12:52:33.151 DEBUG - NK File NOT accepted test_component1.o
+12:52:33.151 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.151 DEBUG - NK File accepted test_component1.cc
+12:52:33.151 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.151 DEBUG - AG test_component1.cc
+12:52:33.151 DEBUG - AG SuffixFileFilter
+12:52:33.151 DEBUG - NK File NOT accepted test_component1.cc
+12:52:33.152 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.152 DEBUG - NK File accepted Makefile
+12:52:33.152 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.152 DEBUG - AG Makefile
+12:52:33.152 DEBUG - AG SuffixFileFilter
+12:52:33.152 DEBUG - NK File NOT accepted Makefile
+12:52:33.160 DEBUG - Sensors : CxxSourceImporter -> CpdSensor -> CxxSquidSensor -> CxxXunitSensor -> CxxCoverageSensor -> CxxCppCheckSensor -> CxxCppNcssSensor -> CxxCoverageGuard -> InitialOpenIssuesSensor -> ProfileSensor -> ProfileEventsSensor -> ProjectLinksSensor -> VersionEventsSensor
+12:52:33.161 INFO  - Sensor CxxSourceImporter...
+12:52:33.161 DEBUG - NK language queryc++
+12:52:33.161 DEBUG - NK Get languagec++
+12:52:33.161 DEBUG - NK Get languagec++
+12:52:33.164 DEBUG - NK c++ SuffixFileFilter8
+12:52:33.164 DEBUG - NK1 cxx
+12:52:33.164 DEBUG - NK1 cpp
+12:52:33.164 DEBUG - NK1 cc
+12:52:33.164 DEBUG - NK1 c
+12:52:33.164 DEBUG - NK1 hxx
+12:52:33.164 DEBUG - NK1 hpp
+12:52:33.164 DEBUG - NK1 hh
+12:52:33.165 DEBUG - NK1 h
+12:52:33.165 DEBUG - AG SuffixFileFilter
+12:52:33.166 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.171 DEBUG - NK File accepted component1.gcno
+12:52:33.172 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.172 DEBUG - AG component1.gcno
+12:52:33.172 DEBUG - AG SuffixFileFilter
+12:52:33.172 DEBUG - NK File NOT accepted component1.gcno
+12:52:33.172 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.172 DEBUG - NK File accepted component1.o
+12:52:33.172 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.172 DEBUG - AG component1.o
+12:52:33.172 DEBUG - AG SuffixFileFilter
+12:52:33.173 DEBUG - NK File NOT accepted component1.o
+12:52:33.173 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.173 DEBUG - NK File accepted component2.cc
+12:52:33.173 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.173 DEBUG - AG component2.cc
+12:52:33.173 DEBUG - AG SuffixFileFilter
+12:52:33.173 DEBUG - NK File accepted component2.cc
+12:52:33.173 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.173 DEBUG - NK File accepted component1.gcda
+12:52:33.173 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.174 DEBUG - AG component1.gcda
+12:52:33.174 DEBUG - AG SuffixFileFilter
+12:52:33.174 DEBUG - NK File NOT accepted component1.gcda
+12:52:33.181 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.181 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.181 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.182 DEBUG - AG StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.182 DEBUG - AG SuffixFileFilter
+12:52:33.182 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.182 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.182 DEBUG - NK File accepted component1.cc
+12:52:33.182 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.182 DEBUG - AG component1.cc
+12:52:33.182 DEBUG - AG SuffixFileFilter
+12:52:33.182 DEBUG - NK File accepted component1.cc
+12:52:33.182 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.182 DEBUG - NK File accepted component1.hh
+12:52:33.182 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.183 DEBUG - AG component1.hh
+12:52:33.183 DEBUG - AG SuffixFileFilter
+12:52:33.183 DEBUG - NK File accepted component1.hh
+12:52:33.183 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.183 DEBUG - NK File accepted File.inc
+12:52:33.183 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.183 DEBUG - AG File.inc
+12:52:33.183 DEBUG - AG SuffixFileFilter
+12:52:33.183 DEBUG - NK File accepted File.inc
+12:52:33.183 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.183 DEBUG - NK File accepted Makefile
+12:52:33.183 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.183 DEBUG - AG Makefile
+12:52:33.184 DEBUG - AG SuffixFileFilter
+12:52:33.184 DEBUG - NK File NOT accepted Makefile
+12:52:33.184 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.185 DEBUG - NK File accepted Makefile
+12:52:33.185 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.185 DEBUG - AG Makefile
+12:52:33.185 DEBUG - AG SuffixFileFilter
+12:52:33.185 DEBUG - NK File NOT accepted Makefile
+12:52:33.186 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.186 DEBUG - NK File accepted Makefile
+12:52:33.186 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.186 DEBUG - AG Makefile
+12:52:33.186 DEBUG - AG SuffixFileFilter
+12:52:33.186 DEBUG - NK File NOT accepted Makefile
+12:52:33.186 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.186 DEBUG - NK File accepted main.o
+12:52:33.186 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.186 DEBUG - AG main.o
+12:52:33.186 DEBUG - AG SuffixFileFilter
+12:52:33.186 DEBUG - NK File NOT accepted main.o
+12:52:33.187 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.187 DEBUG - NK File accepted main.cc
+12:52:33.187 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.187 DEBUG - AG main.cc
+12:52:33.187 DEBUG - AG SuffixFileFilter
+12:52:33.187 DEBUG - NK File accepted main.cc
+12:52:33.187 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.188 DEBUG - NK File accepted main.gcno
+12:52:33.188 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.188 DEBUG - AG main.gcno
+12:52:33.188 DEBUG - AG SuffixFileFilter
+12:52:33.188 DEBUG - NK File NOT accepted main.gcno
+12:52:33.189 DEBUG - Suffixes size '8'
+12:52:33.304 DEBUG - Suffixes size '8'
+12:52:33.305 DEBUG - File 'StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc' is not valid cpp file
+12:52:33.305 DEBUG - Suffixes size '8'
+12:52:33.324 DEBUG - Suffixes size '8'
+12:52:33.341 DEBUG - Suffixes size '8'
+12:52:33.341 DEBUG - File 'File.inc' is not valid cpp file
+12:52:33.341 DEBUG - Suffixes size '8'
+12:52:33.365 DEBUG - NK language queryc++
+12:52:33.365 DEBUG - NK Get languagec++
+12:52:33.365 DEBUG - NK Get languagec++
+12:52:33.365 DEBUG - NK c++ SuffixFileFilter8
+12:52:33.365 DEBUG - NK1 cxx
+12:52:33.365 DEBUG - NK1 cpp
+12:52:33.365 DEBUG - NK1 cc
+12:52:33.365 DEBUG - NK1 c
+12:52:33.365 DEBUG - NK1 hxx
+12:52:33.365 DEBUG - NK1 hpp
+12:52:33.365 DEBUG - NK1 hh
+12:52:33.365 DEBUG - NK1 h
+12:52:33.365 DEBUG - AG SuffixFileFilter
+12:52:33.366 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.366 DEBUG - NK File accepted test_component1.o
+12:52:33.367 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.367 DEBUG - AG test_component1.o
+12:52:33.367 DEBUG - AG SuffixFileFilter
+12:52:33.367 DEBUG - NK File NOT accepted test_component1.o
+12:52:33.367 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.367 DEBUG - NK File accepted test_component1.cc
+12:52:33.367 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.367 DEBUG - AG test_component1.cc
+12:52:33.367 DEBUG - AG SuffixFileFilter
+12:52:33.367 DEBUG - NK File accepted test_component1.cc
+12:52:33.367 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.367 DEBUG - NK File accepted Makefile
+12:52:33.367 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.367 DEBUG - AG Makefile
+12:52:33.367 DEBUG - AG SuffixFileFilter
+12:52:33.367 DEBUG - NK File NOT accepted Makefile
+12:52:33.367 DEBUG - Suffixes size '8'
+12:52:33.404 INFO  - Sensor CxxSourceImporter done: 243 ms
+12:52:33.404 INFO  - Sensor CpdSensor...
+12:52:33.404 INFO  - SonarBridgeEngine is used
+12:52:33.404 INFO  - Copy-paste detection exclusions:
+  dummy
+12:52:33.404 DEBUG - Project key CxxPlugin:Sample
+12:52:33.404 DEBUG - Project lang c++
+12:52:33.404 DEBUG - NK language queryc++
+12:52:33.405 DEBUG - NK Get languagec++
+12:52:33.405 DEBUG - NK Get languagec++
+12:52:33.405 DEBUG - NK c++ SuffixFileFilter8
+12:52:33.405 DEBUG - NK1 cxx
+12:52:33.405 DEBUG - NK1 cpp
+12:52:33.405 DEBUG - NK1 cc
+12:52:33.405 DEBUG - NK1 c
+12:52:33.405 DEBUG - NK1 hxx
+12:52:33.405 DEBUG - NK1 hpp
+12:52:33.405 DEBUG - NK1 hh
+12:52:33.405 DEBUG - NK1 h
+12:52:33.405 DEBUG - AG SuffixFileFilter
+12:52:33.407 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.407 DEBUG - NK File accepted component1.gcno
+12:52:33.407 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.407 DEBUG - AG component1.gcno
+12:52:33.408 DEBUG - AG SuffixFileFilter
+12:52:33.408 DEBUG - NK File NOT accepted component1.gcno
+12:52:33.409 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.409 DEBUG - NK File accepted component1.o
+12:52:33.410 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.410 DEBUG - AG component1.o
+12:52:33.410 DEBUG - AG SuffixFileFilter
+12:52:33.410 DEBUG - NK File NOT accepted component1.o
+12:52:33.410 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.410 DEBUG - NK File accepted component2.cc
+12:52:33.410 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.410 DEBUG - AG component2.cc
+12:52:33.410 DEBUG - AG SuffixFileFilter
+12:52:33.410 DEBUG - NK File accepted component2.cc
+12:52:33.410 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilter
+12:52:33.410 DEBUG - NK File accepted component2.cc
+12:52:33.410 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.410 DEBUG - NK File accepted component1.gcda
+12:52:33.410 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.411 DEBUG - AG component1.gcda
+12:52:33.411 DEBUG - AG SuffixFileFilter
+12:52:33.411 DEBUG - NK File NOT accepted component1.gcda
+12:52:33.411 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.411 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.411 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.411 DEBUG - AG StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.411 DEBUG - AG SuffixFileFilter
+12:52:33.411 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.411 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilter
+12:52:33.411 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:33.411 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.412 DEBUG - NK File accepted component1.cc
+12:52:33.412 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.412 DEBUG - AG component1.cc
+12:52:33.412 DEBUG - AG SuffixFileFilter
+12:52:33.412 DEBUG - NK File accepted component1.cc
+12:52:33.412 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilter
+12:52:33.412 DEBUG - NK File accepted component1.cc
+12:52:33.412 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.412 DEBUG - NK File accepted component1.hh
+12:52:33.412 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.412 DEBUG - AG component1.hh
+12:52:33.412 DEBUG - AG SuffixFileFilter
+12:52:33.413 DEBUG - NK File accepted component1.hh
+12:52:33.413 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilter
+12:52:33.413 DEBUG - NK File accepted component1.hh
+12:52:33.413 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.413 DEBUG - NK File accepted File.inc
+12:52:33.413 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.413 DEBUG - AG File.inc
+12:52:33.414 DEBUG - AG SuffixFileFilter
+12:52:33.414 DEBUG - NK File accepted File.inc
+12:52:33.414 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilter
+12:52:33.414 DEBUG - NK File accepted File.inc
+12:52:33.414 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.414 DEBUG - NK File accepted Makefile
+12:52:33.414 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.414 DEBUG - AG Makefile
+12:52:33.414 DEBUG - AG SuffixFileFilter
+12:52:33.414 DEBUG - NK File NOT accepted Makefile
+12:52:33.414 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.414 DEBUG - NK File accepted Makefile
+12:52:33.414 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.415 DEBUG - AG Makefile
+12:52:33.415 DEBUG - AG SuffixFileFilter
+12:52:33.415 DEBUG - NK File NOT accepted Makefile
+12:52:33.415 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.415 DEBUG - NK File accepted Makefile
+12:52:33.415 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.415 DEBUG - AG Makefile
+12:52:33.415 DEBUG - AG SuffixFileFilter
+12:52:33.415 DEBUG - NK File NOT accepted Makefile
+12:52:33.415 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.415 DEBUG - NK File accepted main.o
+12:52:33.415 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.416 DEBUG - AG main.o
+12:52:33.416 DEBUG - AG SuffixFileFilter
+12:52:33.416 DEBUG - NK File NOT accepted main.o
+12:52:33.416 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.417 DEBUG - NK File accepted main.cc
+12:52:33.417 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.417 DEBUG - AG main.cc
+12:52:33.417 DEBUG - AG SuffixFileFilter
+12:52:33.417 DEBUG - NK File accepted main.cc
+12:52:33.417 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilter
+12:52:33.417 DEBUG - NK File accepted main.cc
+12:52:33.417 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:33.417 DEBUG - NK File accepted main.gcno
+12:52:33.418 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:33.418 DEBUG - AG main.gcno
+12:52:33.418 DEBUG - AG SuffixFileFilter
+12:52:33.418 DEBUG - NK File NOT accepted main.gcno
+12:52:33.418 INFO  - Cross-project analysis disabled
+12:52:33.426 DEBUG - Populating index from /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component2.cc
+12:52:33.451 DEBUG - Populating index from /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/testMe/StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:35.442 DEBUG - Populating index from /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component1.cc
+12:52:35.468 DEBUG - Populating index from /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component1.hh
+12:52:35.475 DEBUG - Populating index from /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/File.inc
+12:52:35.480 DEBUG - Populating index from /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/cli/main.cc
+12:52:35.497 DEBUG - Detection of duplications for /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component2.cc
+12:52:35.773 DEBUG - Remove data measure from memory: duplications_data, id=1
+12:52:35.773 DEBUG - Detection of duplications for /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/testMe/StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:38.250 DEBUG - Remove data measure from memory: duplications_data, id=2
+12:52:38.250 DEBUG - Detection of duplications for /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component1.cc
+12:52:38.266 DEBUG - Remove data measure from memory: duplications_data, id=3
+12:52:38.266 DEBUG - Detection of duplications for /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component1.hh
+12:52:38.268 DEBUG - Detection of duplications for /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/File.inc
+12:52:38.269 DEBUG - Detection of duplications for /home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/cli/main.cc
+12:52:38.272 INFO  - Sensor CpdSensor done: 4868 ms
+12:52:38.273 INFO  - Sensor CxxSquidSensor...
+12:52:38.273 DEBUG - NK language queryc++
+12:52:38.273 DEBUG - NK Get languagec++
+12:52:38.273 DEBUG - NK Get languagec++
+12:52:38.273 DEBUG - NK c++ SuffixFileFilter8
+12:52:38.273 DEBUG - NK1 cxx
+12:52:38.273 DEBUG - NK1 cpp
+12:52:38.274 DEBUG - NK1 cc
+12:52:38.274 DEBUG - NK1 c
+12:52:38.274 DEBUG - NK1 hxx
+12:52:38.274 DEBUG - NK1 hpp
+12:52:38.274 DEBUG - NK1 hh
+12:52:38.274 DEBUG - NK1 h
+12:52:38.274 DEBUG - AG SuffixFileFilter
+12:52:38.278 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.278 DEBUG - NK File accepted component1.gcno
+12:52:38.278 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.278 DEBUG - AG component1.gcno
+12:52:38.278 DEBUG - AG SuffixFileFilter
+12:52:38.278 DEBUG - NK File NOT accepted component1.gcno
+12:52:38.278 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.278 DEBUG - NK File accepted component1.o
+12:52:38.278 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.278 DEBUG - AG component1.o
+12:52:38.278 DEBUG - AG SuffixFileFilter
+12:52:38.278 DEBUG - NK File NOT accepted component1.o
+12:52:38.279 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.279 DEBUG - NK File accepted component2.cc
+12:52:38.279 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.279 DEBUG - AG component2.cc
+12:52:38.279 DEBUG - AG SuffixFileFilter
+12:52:38.279 DEBUG - NK File accepted component2.cc
+12:52:38.279 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.279 DEBUG - NK File accepted component1.gcda
+12:52:38.279 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.279 DEBUG - AG component1.gcda
+12:52:38.279 DEBUG - AG SuffixFileFilter
+12:52:38.279 DEBUG - NK File NOT accepted component1.gcda
+12:52:38.280 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.280 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:38.280 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.280 DEBUG - AG StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:38.280 DEBUG - AG SuffixFileFilter
+12:52:38.280 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:38.280 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.280 DEBUG - NK File accepted component1.cc
+12:52:38.281 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.281 DEBUG - AG component1.cc
+12:52:38.281 DEBUG - AG SuffixFileFilter
+12:52:38.281 DEBUG - NK File accepted component1.cc
+12:52:38.281 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.281 DEBUG - NK File accepted component1.hh
+12:52:38.281 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.281 DEBUG - AG component1.hh
+12:52:38.283 DEBUG - AG SuffixFileFilter
+12:52:38.283 DEBUG - NK File accepted component1.hh
+12:52:38.283 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.283 DEBUG - NK File accepted File.inc
+12:52:38.283 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.283 DEBUG - AG File.inc
+12:52:38.283 DEBUG - AG SuffixFileFilter
+12:52:38.283 DEBUG - NK File accepted File.inc
+12:52:38.283 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.283 DEBUG - NK File accepted Makefile
+12:52:38.283 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.283 DEBUG - AG Makefile
+12:52:38.284 DEBUG - AG SuffixFileFilter
+12:52:38.284 DEBUG - NK File NOT accepted Makefile
+12:52:38.284 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.284 DEBUG - NK File accepted Makefile
+12:52:38.284 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.284 DEBUG - AG Makefile
+12:52:38.284 DEBUG - AG SuffixFileFilter
+12:52:38.284 DEBUG - NK File NOT accepted Makefile
+12:52:38.284 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.284 DEBUG - NK File accepted Makefile
+12:52:38.284 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.284 DEBUG - AG Makefile
+12:52:38.284 DEBUG - AG SuffixFileFilter
+12:52:38.284 DEBUG - NK File NOT accepted Makefile
+12:52:38.284 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.284 DEBUG - NK File accepted main.o
+12:52:38.284 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.284 DEBUG - AG main.o
+12:52:38.284 DEBUG - AG SuffixFileFilter
+12:52:38.285 DEBUG - NK File NOT accepted main.o
+12:52:38.285 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.285 DEBUG - NK File accepted main.cc
+12:52:38.285 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.285 DEBUG - AG main.cc
+12:52:38.285 DEBUG - AG SuffixFileFilter
+12:52:38.285 DEBUG - NK File accepted main.cc
+12:52:38.285 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:38.285 DEBUG - NK File accepted main.gcno
+12:52:38.285 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:38.285 DEBUG - AG main.gcno
+12:52:38.285 DEBUG - AG SuffixFileFilter
+12:52:38.285 DEBUG - NK File NOT accepted main.gcno
+12:52:38.289 DEBUG - Saving size measures for file '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component2.cc'
+12:52:38.315 DEBUG - Saving size measures for file '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/testMe/StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc'
+12:52:38.533 DEBUG - Saving size measures for file '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component1.cc'
+12:52:38.553 DEBUG - Saving size measures for file '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/component1.hh'
+12:52:38.565 DEBUG - Saving size measures for file '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/lib/File.inc'
+12:52:38.587 DEBUG - Saving size measures for file '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/src/cli/main.cc'
+12:52:38.588 INFO  - Sensor CxxSquidSensor done: 315 ms
+12:52:38.588 INFO  - Sensor CxxXunitSensor...
+12:52:38.588 DEBUG - Using pattern 'build/xunit-report.xml' to find reports
+12:52:38.620 INFO  - Processing report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/xunit-report.xml'
+12:52:38.620 DEBUG - Transformation skipped: no xslt given
+12:52:38.620 INFO  - Parsing report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/xunit-report.xml'
+12:52:38.853 DEBUG - Creating virtual file 'Component1Test' under resource 'org.sonar.api.resources.File@45c9cf[key=Component1Test,dir=<null>,filename=Component1Test,language=c++]'
+12:52:38.853 DEBUG - Saving test execution measures for file 'Component1Test' under resource 'org.sonar.api.resources.File@45c9cf[key=Component1Test,dir=<null>,filename=Component1Test,language=c++]'
+12:52:38.853 INFO  - Sensor CxxXunitSensor done: 265 ms
+12:52:38.854 INFO  - Sensor CxxCoverageSensor...
+12:52:38.854 DEBUG - Using pattern 'build/gcovr-report*.xml' to find reports
+12:52:38.854 DEBUG - Parsing coverage reports
+12:52:38.855 INFO  - Parsing report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/gcovr-report.xml'
+12:52:38.861 INFO  - Added report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/gcovr-report.xml' (parsed by: CoberturaParser) to the coverage data
+12:52:38.863 DEBUG - Ignore direcory while coverage calculations 'cli'
+12:52:38.863 DEBUG - Saving coverage measures for file 'src/lib/component1.cc'
+12:52:38.871 DEBUG - Remove data measure from memory: coverage_line_hits_data, id=4
+12:52:38.889 DEBUG - Parsing integration test coverage reports
+12:52:38.889 DEBUG - Using pattern 'build/gcovr-report*.xml' to find reports
+12:52:38.892 INFO  - Parsing report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/gcovr-report.xml'
+12:52:38.897 INFO  - Added report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/gcovr-report.xml' (parsed by: CoberturaParser) to the coverage data
+12:52:38.897 DEBUG - Ignore direcory while coverage calculations 'cli'
+12:52:38.897 DEBUG - Saving coverage measures for file 'src/lib/component1.cc'
+12:52:38.897 DEBUG - Parsing overall test coverage reports
+12:52:38.897 DEBUG - Using pattern 'build/gcovr-report*.xml' to find reports
+12:52:38.898 INFO  - Parsing report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/gcovr-report.xml'
+12:52:38.899 INFO  - Added report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/gcovr-report.xml' (parsed by: CoberturaParser) to the coverage data
+12:52:38.900 DEBUG - Ignore direcory while coverage calculations 'cli'
+12:52:38.900 DEBUG - Saving coverage measures for file 'src/lib/component1.cc'
+12:52:38.900 INFO  - Sensor CxxCoverageSensor done: 47 ms
+12:52:38.900 INFO  - Sensor CxxCppCheckSensor...
+12:52:38.900 DEBUG - Using pattern 'build/cppcheck-report.xml' to find reports
+12:52:38.900 INFO  - Processing report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/cppcheck-report.xml'
+12:52:38.990 WARN  - CppCheck warning: Cppcheck cannot find all the include files. Cppcheck can check the code without the include files found. But the results will probably be more accurate if all the include files are found. Please check your project's include directories and add all of them as include directories for Cppcheck. To see what files Cppcheck cannot find use --check-config.
+12:52:38.994 INFO  - Sensor CxxCppCheckSensor done: 94 ms
+12:52:38.994 INFO  - Sensor CxxCppNcssSensor...
+12:52:38.994 DEBUG - Using pattern 'build/cppncss-report.xml' to find reports
+12:52:38.995 INFO  - Processing report '/home/kosmal/sonar-sdk/sonar-cxx/src/samples/SampleProject2/build/cppncss-report.xml'
+12:52:39.007 DEBUG - Saving complexity measures for file 'src/cli/main.cc'
+12:52:39.063 DEBUG - Saving complexity measures for file 'src/lib/component1.cc'
+12:52:39.064 DEBUG - Saving complexity measures for file 'src/lib/component2.cc'
+12:52:39.064 INFO  - Sensor CxxCppNcssSensor done: 70 ms
+12:52:39.064 INFO  - Sensor CxxCoverageGuard...
+12:52:39.064 DEBUG - NK language queryc++
+12:52:39.064 DEBUG - NK Get languagec++
+12:52:39.064 DEBUG - NK Get languagec++
+12:52:39.064 DEBUG - NK c++ SuffixFileFilter8
+12:52:39.064 DEBUG - NK1 cxx
+12:52:39.065 DEBUG - NK1 cpp
+12:52:39.067 DEBUG - NK1 cc
+12:52:39.067 DEBUG - NK1 c
+12:52:39.067 DEBUG - NK1 hxx
+12:52:39.067 DEBUG - NK1 hpp
+12:52:39.068 DEBUG - NK1 hh
+12:52:39.068 DEBUG - NK1 h
+12:52:39.068 DEBUG - AG SuffixFileFilter
+12:52:39.070 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.070 DEBUG - NK File accepted component1.gcno
+12:52:39.070 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.070 DEBUG - AG component1.gcno
+12:52:39.070 DEBUG - AG SuffixFileFilter
+12:52:39.070 DEBUG - NK File NOT accepted component1.gcno
+12:52:39.070 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.070 DEBUG - NK File accepted component1.o
+12:52:39.070 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.070 DEBUG - AG component1.o
+12:52:39.070 DEBUG - AG SuffixFileFilter
+12:52:39.070 DEBUG - NK File NOT accepted component1.o
+12:52:39.070 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.071 DEBUG - NK File accepted component2.cc
+12:52:39.071 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.071 DEBUG - AG component2.cc
+12:52:39.071 DEBUG - AG SuffixFileFilter
+12:52:39.071 DEBUG - NK File accepted component2.cc
+12:52:39.071 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.071 DEBUG - NK File accepted component1.gcda
+12:52:39.071 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.071 DEBUG - AG component1.gcda
+12:52:39.071 DEBUG - AG SuffixFileFilter
+12:52:39.071 DEBUG - NK File NOT accepted component1.gcda
+12:52:39.071 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.071 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:39.071 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.071 DEBUG - AG StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:39.071 DEBUG - AG SuffixFileFilter
+12:52:39.071 DEBUG - NK File accepted StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc
+12:52:39.071 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.072 DEBUG - NK File accepted component1.cc
+12:52:39.072 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.072 DEBUG - AG component1.cc
+12:52:39.072 DEBUG - AG SuffixFileFilter
+12:52:39.079 DEBUG - NK File accepted component1.cc
+12:52:39.079 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.080 DEBUG - NK File accepted component1.hh
+12:52:39.080 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.080 DEBUG - AG component1.hh
+12:52:39.080 DEBUG - AG SuffixFileFilter
+12:52:39.080 DEBUG - NK File accepted component1.hh
+12:52:39.080 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.081 DEBUG - NK File accepted File.inc
+12:52:39.081 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.081 DEBUG - AG File.inc
+12:52:39.082 DEBUG - AG SuffixFileFilter
+12:52:39.082 DEBUG - NK File accepted File.inc
+12:52:39.082 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.083 DEBUG - NK File accepted Makefile
+12:52:39.083 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.083 DEBUG - AG Makefile
+12:52:39.083 DEBUG - AG SuffixFileFilter
+12:52:39.083 DEBUG - NK File NOT accepted Makefile
+12:52:39.083 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.083 DEBUG - NK File accepted Makefile
+12:52:39.083 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.084 DEBUG - AG Makefile
+12:52:39.084 DEBUG - AG SuffixFileFilter
+12:52:39.084 DEBUG - NK File NOT accepted Makefile
+12:52:39.084 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.084 DEBUG - NK File accepted Makefile
+12:52:39.084 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.084 DEBUG - AG Makefile
+12:52:39.084 DEBUG - AG SuffixFileFilter
+12:52:39.084 DEBUG - NK File NOT accepted Makefile
+12:52:39.084 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.085 DEBUG - NK File accepted main.o
+12:52:39.085 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.085 DEBUG - AG main.o
+12:52:39.085 DEBUG - AG SuffixFileFilter
+12:52:39.085 DEBUG - NK File NOT accepted main.o
+12:52:39.085 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.085 DEBUG - NK File accepted main.cc
+12:52:39.085 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.085 DEBUG - AG main.cc
+12:52:39.085 DEBUG - AG SuffixFileFilter
+12:52:39.085 DEBUG - NK File accepted main.cc
+12:52:39.085 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.ExclusionFilters
+12:52:39.085 DEBUG - NK File accepted main.gcno
+12:52:39.085 DEBUG - NK Filters  org.sonar.batch.scan.filesystem.FileFilterWrapper
+12:52:39.085 DEBUG - AG main.gcno
+12:52:39.086 DEBUG - AG SuffixFileFilter
+12:52:39.086 DEBUG - NK File NOT accepted main.gcno
+12:52:39.086 DEBUG - Guard is checking the file 'component2.cc'
+12:52:39.086 DEBUG - Guard is checking the file 'StatusDisplayTests_WBTS_DISP_19376_TEST001_SiteConf.inc'
+12:52:39.086 DEBUG - Guard is checking the file 'component1.cc'
+12:52:39.086 DEBUG - Guard is checking the file 'component1.hh'
+12:52:39.086 DEBUG - Guard is checking the file 'File.inc'
+12:52:39.086 DEBUG - Guard is checking the file 'main.cc'
+12:52:39.088 DEBUG - Ignore direcory while coverage calculations 'cli'
+12:52:39.090 DEBUG - Saving zero coverage for 'org.sonar.api.resources.File@1b3807d[key=lib/component2.cc,dir=lib,filename=component2.cc,language=<null>]'
+12:52:39.091 INFO  - Sensor CxxCoverageGuard done: 27 ms
+12:52:39.091 INFO  - Sensor InitialOpenIssuesSensor...
+12:52:39.113 INFO  - Sensor InitialOpenIssuesSensor done: 22 ms
+12:52:39.113 INFO  - Sensor ProfileSensor...
+12:52:39.744 INFO  - Sensor ProfileSensor done: 631 ms
+12:52:39.744 INFO  - Sensor ProfileEventsSensor...
+12:52:39.767 INFO  - Sensor ProfileEventsSensor done: 23 ms
+12:52:39.767 INFO  - Sensor ProjectLinksSensor...
+12:52:39.780 INFO  - Sensor ProjectLinksSensor done: 13 ms
+12:52:39.780 INFO  - Sensor VersionEventsSensor...
+12:52:39.790 INFO  - Sensor VersionEventsSensor done: 10 ms
+12:52:40.080 DEBUG - Updating semaphore batch-CxxPlugin:Sample
+12:52:40.141 INFO  - Execute decorators...
+12:52:40.142 DEBUG - Decorators: ManualMeasureDecorator -> SumDuplicationsDecorator -> org.sonar.plugins.core.issue.IssueTrackingDecorator@1195487 -> UnitTestDecorator -> org.sonar.plugins.core.security.ApplyProjectRolesDecorator@1e38bbf -> org.sonar.plugins.core.sensors.DirectoriesDecorator@1db253f -> org.sonar.plugins.core.sensors.FilesDecorator@6a65b1 -> org.sonar.plugins.core.timemachine.TimeMachineConfigurationPersister@164b21d -> org.sonar.plugins.core.timemachine.NewCoverageFileAnalyzer@13a853a -> org.sonar.plugins.core.timemachine.NewItCoverageFileAnalyzer@100abac -> org.sonar.plugins.core.timemachine.NewOverallCoverageFileAnalyzer@106b606 -> org.sonar.plugins.core.timemachine.NewCoverageAggregator@1988303 -> org.sonar.plugins.design.batch.ProjectDsmDecorator@1e9a533 -> FileTangleIndexDecorator -> org.sonar.plugins.design.batch.SuspectLcom4DensityDecorator@4d32a5 -> f(lines) -> f(generated_lines) -> f(ncloc) -> f(generated_ncloc) -> f(classes) -> f(packages) -> f(functions) -> f(accessors) -> f(statements) -> f(public_api) -> f(comment_lines) -> f(comment_blank_lines) -> f(public_undocumented_api) -> f(commented_out_code_lines) -> f(complexity) -> f(complexity_in_classes) -> f(complexity_in_functions) -> f(class_complexity_distribution) -> f(function_complexity_distribution) -> f(file_complexity_distribution) -> f(lines_to_cover) -> f(uncovered_lines) -> f(conditions_to_cover) -> f(uncovered_conditions) -> f(it_lines_to_cover) -> f(it_uncovered_lines) -> f(it_conditions_to_cover) -> f(it_uncovered_conditions) -> f(overall_lines_to_cover) -> f(overall_uncovered_lines) -> f(overall_conditions_to_cover) -> f(overall_uncovered_conditions) -> f(rfc) -> f(rfc_distribution) -> f(lcom4) -> f(lcom4_distribution) -> f(package_cycles) -> f(package_tangles) -> f(package_feedback_edges) -> f(package_edges_weight) -> f(new_lines_to_cover) -> f(new_uncovered_lines) -> f(new_conditions_to_cover) -> f(new_uncovered_conditions) -> f(new_it_lines_to_cover) -> f(new_it_uncovered_lines) -> f(new_it_conditions_to_cover) -> f(new_it_uncovered_conditions) -> f(new_overall_lines_to_cover) -> f(new_overall_uncovered_lines) -> f(new_overall_conditions_to_cover) -> f(new_overall_uncovered_conditions) -> org.sonar.plugins.cpd.decorators.DuplicationDensityDecorator@9109e7 -> CountUnresolvedIssuesDecorator -> CountFalsePositivesDecorator -> CommentDensityDecorator -> PackageTangleIndexDecorator -> f(file_complexity) -> f(class_complexity) -> f(function_complexity) -> org.sonar.plugins.core.sensors.LineCoverageDecorator@136bbeb -> org.sonar.plugins.core.sensors.CoverageDecorator@6b6af4 -> org.sonar.plugins.core.sensors.BranchCoverageDecorator@3aeaa0 -> org.sonar.plugins.core.sensors.ItLineCoverageDecorator@1c50f -> org.sonar.plugins.core.sensors.ItCoverageDecorator@3084d2 -> org.sonar.plugins.core.sensors.ItBranchCoverageDecorator@160098d -> org.sonar.plugins.core.sensors.OverallLineCoverageDecorator@134014 -> org.sonar.plugins.core.sensors.OverallCoverageDecorator@1d3ffdc -> org.sonar.plugins.core.sensors.OverallBranchCoverageDecorator@142ceaf -> org.sonar.plugins.core.issue.WeightedIssuesDecorator@f3aae3 -> IssuesDensityDecorator -> org.sonar.plugins.core.timemachine.TendencyDecorator@6a8248 -> VariationDecorator
+12:52:40.466 DEBUG - Reload the data measure: coverage_line_hits_data, id=4
+12:52:40.467 DEBUG - Flush 1 data measures from memory: 
+12:52:40.775 DEBUG - Decorator time:
+	ManualMeasureDecorator: 51ms
+	SumDuplicationsDecorator: 2ms
+	org.sonar.plugins.core.issue.IssueTrackingDecorator@1195487: 112ms
+	UnitTestDecorator: 1ms
+	org.sonar.plugins.core.security.ApplyProjectRolesDecorator@1e38bbf: 6ms
+	org.sonar.plugins.core.sensors.DirectoriesDecorator@1db253f: 4ms
+	org.sonar.plugins.core.sensors.FilesDecorator@6a65b1: 0ms
+	org.sonar.plugins.core.timemachine.TimeMachineConfigurationPersister@164b21d: 13ms
+	org.sonar.plugins.core.timemachine.NewCoverageFileAnalyzer@13a853a: 9ms
+	org.sonar.plugins.core.timemachine.NewItCoverageFileAnalyzer@100abac: 0ms
+	org.sonar.plugins.core.timemachine.NewOverallCoverageFileAnalyzer@106b606: 2ms
+	org.sonar.plugins.core.timemachine.NewCoverageAggregator@1988303: 1ms
+	org.sonar.plugins.design.batch.ProjectDsmDecorator@1e9a533: 1ms
+	FileTangleIndexDecorator: 0ms
+	org.sonar.plugins.design.batch.SuspectLcom4DensityDecorator@4d32a5: 1ms
+	f(lines): 0ms
+	f(generated_lines): 1ms
+	f(ncloc): 0ms
+	f(generated_ncloc): 0ms
+	f(classes): 1ms
+	f(packages): 1ms
+	f(functions): 0ms
+	f(accessors): 1ms
+	f(statements): 1ms
+	f(public_api): 1ms
+	f(comment_lines): 0ms
+	f(comment_blank_lines): 0ms
+	f(public_undocumented_api): 0ms
+	f(commented_out_code_lines): 3ms
+	f(complexity): 1ms
+	f(complexity_in_classes): 0ms
+	f(complexity_in_functions): 0ms
+	f(class_complexity_distribution): 1ms
+	f(function_complexity_distribution): 1ms
+	f(file_complexity_distribution): 1ms
+	f(lines_to_cover): 1ms
+	f(uncovered_lines): 0ms
+	f(conditions_to_cover): 0ms
+	f(uncovered_conditions): 3ms
+	f(it_lines_to_cover): 0ms
+	f(it_uncovered_lines): 0ms
+	f(it_conditions_to_cover): 1ms
+	f(it_uncovered_conditions): 0ms
+	f(overall_lines_to_cover): 2ms
+	f(overall_uncovered_lines): 0ms
+	f(overall_conditions_to_cover): 2ms
+	f(overall_uncovered_conditions): 1ms
+	f(rfc): 1ms
+	f(rfc_distribution): 0ms
+	f(lcom4): 0ms
+	f(lcom4_distribution): 0ms
+	f(package_cycles): 0ms
+	f(package_tangles): 0ms
+	f(package_feedback_edges): 1ms
+	f(package_edges_weight): 0ms
+	f(new_lines_to_cover): 0ms
+	f(new_uncovered_lines): 0ms
+	f(new_conditions_to_cover): 1ms
+	f(new_uncovered_conditions): 1ms
+	f(new_it_lines_to_cover): 0ms
+	f(new_it_uncovered_lines): 0ms
+	f(new_it_conditions_to_cover): 0ms
+	f(new_it_uncovered_conditions): 0ms
+	f(new_overall_lines_to_cover): 0ms
+	f(new_overall_uncovered_lines): 0ms
+	f(new_overall_conditions_to_cover): 0ms
+	f(new_overall_uncovered_conditions): 0ms
+	org.sonar.plugins.cpd.decorators.DuplicationDensityDecorator@9109e7: 0ms
+	CountUnresolvedIssuesDecorator: 259ms
+	CountFalsePositivesDecorator: 8ms
+	CommentDensityDecorator: 1ms
+	PackageTangleIndexDecorator: 0ms
+	f(file_complexity): 0ms
+	f(class_complexity): 1ms
+	f(function_complexity): 1ms
+	org.sonar.plugins.core.sensors.LineCoverageDecorator@136bbeb: 0ms
+	org.sonar.plugins.core.sensors.CoverageDecorator@6b6af4: 1ms
+	org.sonar.plugins.core.sensors.BranchCoverageDecorator@3aeaa0: 0ms
+	org.sonar.plugins.core.sensors.ItLineCoverageDecorator@1c50f: 0ms
+	org.sonar.plugins.core.sensors.ItCoverageDecorator@3084d2: 0ms
+	org.sonar.plugins.core.sensors.ItBranchCoverageDecorator@160098d: 2ms
+	org.sonar.plugins.core.sensors.OverallLineCoverageDecorator@134014: 1ms
+	org.sonar.plugins.core.sensors.OverallCoverageDecorator@1d3ffdc: 1ms
+	org.sonar.plugins.core.sensors.OverallBranchCoverageDecorator@142ceaf: 1ms
+	org.sonar.plugins.core.issue.WeightedIssuesDecorator@f3aae3: 1ms
+	IssuesDensityDecorator: 0ms
+	org.sonar.plugins.core.timemachine.TendencyDecorator@6a8248: 102ms
+	VariationDecorator: 4ms
+
+12:52:40.776 DEBUG - 526 measures to dump
+12:52:41.388 INFO  - Store results in database
+12:52:41.388 DEBUG - Execute org.sonar.batch.index.ComponentDataPersister
+12:52:41.391 DEBUG - Execute org.sonar.batch.issue.IssuePersister
+12:52:41.414 DEBUG - Execute org.sonar.batch.phases.GraphPersister
+12:52:41.505 INFO  - ANALYSIS SUCCESSFUL, you can browse http://localhost:9000/dashboard/index/CxxPlugin:Sample
+12:52:41.507 DEBUG - Post-jobs : org.sonar.plugins.core.issue.notification.SendIssueNotificationsPostJob@4caa92 -> org.sonar.plugins.core.batch.IndexProjectPostJob@1528488 -> org.sonar.plugins.dbcleaner.ProjectPurgePostJob@7b059a
+12:52:41.507 INFO  - Executing post-job class org.sonar.plugins.core.issue.notification.SendIssueNotificationsPostJob
+12:52:41.548 INFO  - Executing post-job class org.sonar.plugins.core.batch.IndexProjectPostJob
+12:52:41.794 INFO  - Executing post-job class org.sonar.plugins.dbcleaner.ProjectPurgePostJob
+12:52:41.808 INFO  - -> Keep one snapshot per day between 2013-08-08 and 2013-09-04
+12:52:41.809 INFO  - -> Keep one snapshot per week between 2012-09-06 and 2013-08-08
+12:52:41.809 INFO  - -> Keep one snapshot per month between 2008-09-11 and 2012-09-06
+12:52:41.809 INFO  - -> Delete data prior to: 2008-09-11
+12:52:41.810 DEBUG - ooo Using Connection [jdbc:h2:tcp://localhost/sonar, UserName=SONAR, H2 JDBC Driver]
+12:52:41.810 DEBUG - ==>  Preparing: select * from projects where id=? 
+12:52:41.811 DEBUG - ==> Parameters: 1(Long)
+12:52:41.814 DEBUG - ooo Using Connection [jdbc:h2:tcp://localhost/sonar, UserName=SONAR, H2 JDBC Driver]
+12:52:41.814 DEBUG - ==>  Preparing: select * from projects where scope='PRJ' and root_id=? 
+12:52:41.815 DEBUG - ==> Parameters: 1(Long)
+12:52:41.815 INFO  - -> Clean Sample [id=1]
+12:52:41.836 DEBUG - Release semaphore on project : org.sonar.api.resources.Project@5db614[id=1,key=CxxPlugin:Sample,qualifier=TRK], with key batch-CxxPlugin:Sample
+12:52:41.953 DEBUG - Delete temporary directory: /tmp/sonar-batch60987849678709713930460320507689
+INFO: ------------------------------------------------------------------------
+INFO: EXECUTION SUCCESS
+INFO: ------------------------------------------------------------------------
+Total time: 25.649s
+Final Memory: 12M/162M
+INFO: ------------------------------------------------------------------------
