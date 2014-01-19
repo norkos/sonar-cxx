@@ -20,22 +20,25 @@
 package org.sonar.plugins.cxx;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-//@Ignore
-public class CxxSampleProject2IT {
+/**
+ * Exclusion from coverage on project level
+ * 
+ */
+public class CxxDisableCoverageIT {
 
 	private static Sonar sonar;
-	private static final String PROJECT_SAMPLE = "CxxPlugin:Sample3";
-	private static final String DIR_UTILS = "CxxPlugin:Sample3:lib";
+	private static final String PROJECT_SAMPLE = "CxxPlugin:DisableCoverage";
 
 	@BeforeClass
 	public static void buildServer() {
@@ -43,37 +46,16 @@ public class CxxSampleProject2IT {
 	}
 
 	@Test
-	public void directoryMetrics() {
-		String[] metricNames = { "coverage", "line_coverage", "branch_coverage" };
-
-		for (int i = 0; i < metricNames.length; ++i) {
-			assertNull(getPackageMeasure(metricNames[i]));
-		}
-	}
-
-	@Test
-	public void coverageMetrics() {
-		String[] metricNames = { "coverage", "line_coverage", "branch_coverage" };
-
-		for (int i = 0; i < metricNames.length; ++i) {
-			assertEquals(0, getProjectMeasure(metricNames[i]).getIntValue()
-					.intValue());
-		}
-
-	}
-
-	@Test
 	public void projectsMetrics() {
-		String[] metricNames = { "critical_violations" };
 
-		double[] values = new double[metricNames.length];
+		String[] metricNames = { "complexity", "function_complexity" };
+
 		for (int i = 0; i < metricNames.length; ++i) {
-			values[i] = getProjectMeasure(metricNames[i]).getValue();
+			assertNotNull(getProjectMeasure(metricNames[i]));
 		}
 
-		double[] expectedValues = { 3.0 };
+		assertNull(getProjectMeasure("coverage"));
 
-		assertThat(values, is(expectedValues));
 	}
 
 	private Measure getProjectMeasure(String metricKey) {
@@ -82,9 +64,4 @@ public class CxxSampleProject2IT {
 		return resource != null ? resource.getMeasure(metricKey) : null;
 	}
 
-	private Measure getPackageMeasure(String metricKey) {
-		Resource resource = sonar.find(ResourceQuery.createForMetrics(
-				DIR_UTILS, metricKey));
-		return resource != null ? resource.getMeasure(metricKey) : null;
-	}
 }

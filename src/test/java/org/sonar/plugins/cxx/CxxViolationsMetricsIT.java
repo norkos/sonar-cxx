@@ -20,51 +20,68 @@
 package org.sonar.plugins.cxx;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
 import org.sonar.wsclient.services.Measure;
 import org.sonar.wsclient.services.Resource;
 import org.sonar.wsclient.services.ResourceQuery;
 
-/**
- * Exclusion from coverage on project level
- *
- */
-public class CxxSampleProjectIT6 {
+//@Ignore
+public class CxxViolationsMetricsIT {
 
 	private static Sonar sonar;
-	private static final String PROJECT_SAMPLE = "CxxPlugin:Sample6";
-	private static final String DIR_UTILS = "CxxPlugin:Sample6:lib";
+	private static final String PROJECT_SAMPLE = "CxxPlugin:Violations";
+	private static final String DIR_UTILS = "CxxPlugin:Violations:lib";
 
 	@BeforeClass
 	public static void buildServer() {
 		sonar = Sonar.create("http://localhost:9000");
 	}
 
+	//faile ?
 	@Test
-	public void projectsMetrics() {
-
-		String[] metricNames = { "coverage" };
+	public void directoryMetrics() {
+		String[] metricNames = { "coverage", "line_coverage", "branch_coverage" };
 
 		for (int i = 0; i < metricNames.length; ++i) {
-			assertNull(getProjectMeasure(metricNames[i]));
+			assertNull(getPackageMeasure(metricNames[i]));
+		}
+		
+		assertNotNull(getPackageMeasure("ncloc"));
+	}
+
+	@Test
+	public void coverageMetrics() {
+		String[] metricNames = { "coverage", "line_coverage", "branch_coverage" };
+
+		for (int i = 0; i < metricNames.length; ++i) {
+			assertEquals(0, getProjectMeasure(metricNames[i]).getIntValue()
+					.intValue());
 		}
 
 	}
 
 	@Test
-	public void directoryMetrics() {
-		String[] metricNames = { "complexity", "function_complexity" };
+	public void violantionsMetrics() {
+		String[] metricNames = { "critical_violations", "false_positive_issues",
+				"distance-complexity", "distance-size", "distance-complexity-ratio", "distance-size-ratio",};
 
+		double[] values = new double[metricNames.length];
 		for (int i = 0; i < metricNames.length; ++i) {
-			assertNotNull(getPackageMeasure(metricNames[i]));
+			values[i] = getProjectMeasure(metricNames[i]).getValue();
 		}
 
+		double[] expectedValues = { 4.0, 2.0,
+				2.0, 8.0, 10.0, 8.0};
+
+		assertThat(values, is(expectedValues));
+		
+		assertEquals(getProjectMeasure("distance-complexity-ratio").getValue(), 100.0 * getProjectMeasure("distance-complexity").getValue() / getProjectMeasure("complexity").getValue(), 0.01);
+		assertEquals(getProjectMeasure("distance-size-ratio").getValue(), 100.0 * getProjectMeasure("distance-size").getValue() / getProjectMeasure("ncloc").getValue(), 0.01);
 	}
 
 	private Measure getProjectMeasure(String metricKey) {

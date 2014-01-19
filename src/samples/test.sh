@@ -1,4 +1,4 @@
-for f in SampleProject2 SampleProject3 SampleProject5 SampleProject6
+for f in BasicMetrics  DisableCoverage  ExclusionMetrics ViolationsMetrics
 do
 	cd $f
 	make && make sonar && make clean
