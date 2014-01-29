@@ -49,4 +49,10 @@ void Bar::do_valgrind_errors(){
     // Mismatched free() / delete / delete []
     ip = new int(0);
     delete [] ip;
+
+	if(a) std::cout << "fired!!!" << std::endl;
+	if(a) std::cout << "fired!!!" << std::endl;
+	if(a) std::cout << "fired!!!" << std::endl;
+	if(a) std::cout << "fired!!!" << std::endl;
+	if(a) std::cout << "fired!!!" << std::endl;
 }

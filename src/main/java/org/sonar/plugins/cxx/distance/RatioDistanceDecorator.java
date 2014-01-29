@@ -78,7 +78,7 @@ public class RatioDistanceDecorator implements Decorator {
 			double ratio = 100.0 * overrunValue / allValue;
 
 			context.saveMeasure(result, ratio);
-			CummulataiveDistancePlugin.LOG.error("Saving cummulative factor: "
+			CummulataiveDistancePlugin.LOG.debug("Saving cummulative factor: "
 					+ result.getName() + " with value " + ratio + " from all "
 					+ allValue + " and overrun" + overrunValue);
 		}

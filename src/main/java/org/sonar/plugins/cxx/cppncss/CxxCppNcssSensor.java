@@ -84,9 +84,9 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 			final SensorContext context, File report)
 			throws javax.xml.stream.XMLStreamException {
 
-		final int maxComplexity = getParam(DEFAULT_MAX_COMPLEXITY,
+		final int maxComplexity = getParam(conf, DEFAULT_MAX_COMPLEXITY,
 				FUNCTION_COMPLEXITY);
-		final int maxSize = getParam(DEFAULT_MAX_SIZE, FUNCTION_SIZE);
+		final int maxSize = getParam(conf, DEFAULT_MAX_SIZE, FUNCTION_SIZE);
 
 		final Excluder excluder = new ComplexityExcluder(conf);
 
@@ -127,7 +127,7 @@ public class CxxCppNcssSensor extends CxxReportSensor {
 		}
 	}
 
-	private int getParam(int defaultValue, String param) {
+	public static int getParam(Settings conf, int defaultValue, String param) {
 		String value = conf.getString(param);
 		if (value == null) {
 			return defaultValue;
