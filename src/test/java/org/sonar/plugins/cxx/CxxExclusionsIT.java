@@ -20,10 +20,12 @@
 package org.sonar.plugins.cxx;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
+import org.fest.assertions.AssertExtension;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.sonar.wsclient.Sonar;
@@ -78,6 +80,8 @@ public class CxxExclusionsIT {
 	public void coverageMetrics() {
 		assertNull(getPackageMeasure("coverage", DIR_COV));
 		assertNotNull(getPackageMeasure("complexity", DIR_COV));
+		
+		assertEquals(getPackageMeasure("complexity", DIR_COV).getValue(), getPackageMeasure("not-covered-complexity", DIR_COV).getValue(), 0.00001d);
 	}
 
 	private Measure getProjectMeasure(String metricKey) {

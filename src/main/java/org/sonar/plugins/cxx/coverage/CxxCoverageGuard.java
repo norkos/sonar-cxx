@@ -30,6 +30,7 @@ import org.sonar.api.batch.SensorContext;
 import org.sonar.api.config.Settings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
+import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.resources.InputFile;
 import org.sonar.api.resources.Project;
@@ -43,7 +44,7 @@ import org.sonar.plugins.cxx.utils.CxxUtils;
 public class CxxCoverageGuard extends CxxReportSensor {
 
 	public static final String NO_COVERAGE = "sonar.cxx.noCoverage";
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -107,6 +108,30 @@ public class CxxCoverageGuard extends CxxReportSensor {
 
 	}
 
+	private final class NotNeededCoverage implements GuardStrategy {
+
+		public boolean isApplicable(org.sonar.api.resources.File cxxFile,
+				SensorContext context) {
+			Measure complexity = context
+					.getMeasure(cxxFile, CoreMetrics.COMPLEXITY);
+			
+			return MeasureUtils.hasValue(complexity);
+		}
+
+		public void saveMeasure(org.sonar.api.resources.File cxxFile,
+				SensorContext context) {
+
+			CxxUtils.LOG.debug("Saving not needed coverage for '{}'",
+					cxxFile.toString());
+
+			context.saveMeasure(cxxFile,
+					NoCoverageMetrics.NOT_COVERED_COMPLEXITY, context
+							.getMeasure(cxxFile, CoreMetrics.COMPLEXITY)
+							.getValue());
+		}
+
+	}
+
 	public boolean shouldExecuteOnProject(Project project) {
 		return CxxLanguage.KEY.equals(project.getLanguageKey());
 	}
@@ -116,13 +141,14 @@ public class CxxCoverageGuard extends CxxReportSensor {
 				CxxLanguage.KEY);
 
 		String value = conf.getString(NO_COVERAGE);
-		if(value != null && Boolean.parseBoolean(value)){
+		if (value != null && Boolean.parseBoolean(value)) {
 			CxxUtils.LOG.debug("Project '{}' excluded from coverage guard",
 					project.getName());
 			return;
 		}
-		
+
 		GuardStrategy noCoverageProvided = new NoCoverage();
+		GuardStrategy coverageNotNeeded = new NotNeededCoverage();
 		Excluder excluder = new CoverageExcluder(conf);
 
 		for (InputFile inputFile : sources) {
@@ -134,8 +160,11 @@ public class CxxCoverageGuard extends CxxReportSensor {
 			try {
 				reader = new FileReader(file);
 
-				if (!excluder.isExcluded(file)
-						&& noCoverageProvided.isApplicable(cxxFile, context)) {
+				if (excluder.isExcluded(file)) {
+					if (coverageNotNeeded.isApplicable(cxxFile, context)) {
+						coverageNotNeeded.saveMeasure(cxxFile, context);
+					}
+				} else if (noCoverageProvided.isApplicable(cxxFile, context)) {
 					noCoverageProvided.saveMeasure(cxxFile, context);
 				}
 

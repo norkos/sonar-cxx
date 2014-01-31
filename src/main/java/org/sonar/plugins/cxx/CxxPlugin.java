@@ -28,6 +28,7 @@ import org.sonar.api.Property;
 import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.cxx.coverage.CxxCoverageGuard;
 import org.sonar.plugins.cxx.coverage.CxxCoverageSensor;
+import org.sonar.plugins.cxx.coverage.NoCoverageMetrics;
 import org.sonar.plugins.cxx.cppcheck.CxxCppCheckRuleRepository;
 import org.sonar.plugins.cxx.cppcheck.CxxCppCheckSensor;
 import org.sonar.plugins.cxx.cppncss.CxxCppNcssRuleRepository;
@@ -133,6 +134,7 @@ public final class CxxPlugin extends SonarPlugin {
     l.add(DistanceDecorator.class);
     l.add(DistanceMetrics.class);
     l.add(RatioDistanceDecorator.class);
+    l.add(NoCoverageMetrics.class);
     
 
     return l;
