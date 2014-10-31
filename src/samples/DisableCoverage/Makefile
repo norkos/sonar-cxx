@@ -4,7 +4,7 @@ export BUILD_DIR = $(shell "pwd")/build
 export CXXFLAGS = -fprofile-arcs -ftest-coverage
 
 # Flags passed to the linker.
-export LDFLAGS = -lgcov -fprofile-arcs
+export LDFLAGS = -lgcov -fprofile-arcs -pthread
 
 export CC = g++
 export LD = g++
