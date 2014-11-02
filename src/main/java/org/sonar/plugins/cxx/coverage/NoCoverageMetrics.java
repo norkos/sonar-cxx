@@ -54,15 +54,23 @@ public class NoCoverageMetrics implements Metrics {
 	public final static Metric NOT_COVERED_COMPLEXITY = new Metric.Builder(
 			"not-covered-complexity", "Complexity excluded from coverage",
 			Metric.ValueType.INT)
-			.setDescription("Coverage that don't need to be covered")
+			.setDescription("Complexity that don't need to be covered")
 			.setDirection(Metric.DIRECTION_NONE)
 			.setDomain(CoreMetrics.DOMAIN_ISSUES).setQualitative(false)
 			.setFormula(new SumChildValuesFormula(true)).create();
 	
+
+	public final static Metric TESTS_LINES = new Metric.Builder(
+			"tests-lines", "Lines of tests",
+			Metric.ValueType.INT)
+			.setDescription("Test lines")
+			.setDirection(Metric.DIRECTION_NONE)
+			.setDomain(CoreMetrics.DOMAIN_ISSUES).setQualitative(false)
+			.setFormula(new SumChildValuesFormula(true)).create();
 	
 	public List<Metric> getMetrics() {
 		return Arrays
-				.asList(NOT_COVERED_COMPLEXITY);
+				.asList(NOT_COVERED_COMPLEXITY, TESTS_LINES);
 	}
 }
 

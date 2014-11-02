@@ -128,6 +128,11 @@ public class CxxCoverageGuard extends CxxReportSensor {
 					NoCoverageMetrics.NOT_COVERED_COMPLEXITY, context
 							.getMeasure(cxxFile, CoreMetrics.COMPLEXITY)
 							.getValue());
+			
+			context.saveMeasure(cxxFile,
+					NoCoverageMetrics.TESTS_LINES, context
+							.getMeasure(cxxFile, CoreMetrics.NCLOC)
+							.getValue());
 		}
 
 	}
