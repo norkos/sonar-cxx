@@ -82,7 +82,14 @@ public class CxxExclusionsIT {
 		assertNotNull(getPackageMeasure("complexity", DIR_COV));
 		
 		assertEquals(getPackageMeasure("complexity", DIR_COV).getValue(), getPackageMeasure("not-covered-complexity", DIR_COV).getValue(), 0.00001d);
-		assertEquals(getPackageMeasure("ncloc", DIR_COV).getValue(), getPackageMeasure("tests-lines", DIR_COV).getValue(), 0.00001d);
+	}
+	
+	@Test
+	public void testMetrics() {
+		int ncloc = 7;
+		
+		assertEquals(getPackageMeasure("ncloc", DIR_COV).getValue(), ncloc, 0.00001d);
+		assertEquals(getPackageMeasure("ncloc", DIR_COV).getValue(), getPackageMeasure("not-covered-lines", DIR_COV).getValue(), 0.00001d);
 	}
 
 	private Measure getProjectMeasure(String metricKey) {

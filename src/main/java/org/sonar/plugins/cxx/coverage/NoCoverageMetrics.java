@@ -52,16 +52,16 @@ import org.sonar.api.measures.SumChildValuesFormula;
 public class NoCoverageMetrics implements Metrics {
 
 	public final static Metric NOT_COVERED_COMPLEXITY = new Metric.Builder(
-			"not-covered-complexity", "Complexity excluded from coverage",
+			"not-covered-complexity", "Complexity of UT tests",
 			Metric.ValueType.INT)
-			.setDescription("Complexity that don't need to be covered")
+			.setDescription("Complexity of tests")
 			.setDirection(Metric.DIRECTION_NONE)
 			.setDomain(CoreMetrics.DOMAIN_ISSUES).setQualitative(false)
 			.setFormula(new SumChildValuesFormula(true)).create();
 	
 
 	public final static Metric TESTS_LINES = new Metric.Builder(
-			"tests-lines", "Lines of tests",
+			"not-covered-lines", "Lines of UT tests",
 			Metric.ValueType.INT)
 			.setDescription("Test lines")
 			.setDirection(Metric.DIRECTION_NONE)
