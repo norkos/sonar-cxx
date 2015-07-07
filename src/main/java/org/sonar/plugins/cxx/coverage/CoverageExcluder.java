@@ -25,9 +25,10 @@ import org.sonar.plugins.cxx.Excluder;
 public class CoverageExcluder extends Excluder {
 
 	public static final String COVERAGE_EXDLUDED_DIRECTORIES = "sonar.cxx.coverage.excluded";
+	public static final String COVERAGE_EXDLUDED_FILES = "sonar.cxx.coverage.excluded.files";
 
 	public CoverageExcluder(Settings conf) {
-		super(COVERAGE_EXDLUDED_DIRECTORIES, conf);
+		super(COVERAGE_EXDLUDED_DIRECTORIES, COVERAGE_EXDLUDED_FILES, conf);
 	}
 
 

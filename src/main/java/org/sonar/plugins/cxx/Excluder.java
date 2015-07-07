@@ -29,14 +29,18 @@ import org.sonar.plugins.cxx.utils.CxxUtils;
 public abstract class Excluder {
 
 	private Set<String> directories;
-	private String excluded;
+	private Set<String> files;
 
-	public Excluder(String excluded, Settings conf) {
-		this.excluded = excluded;
-		directories = getExcludedDirectories(conf);
+	protected Excluder(String excludedDirs, String excludedFiles, Settings conf) {
+		directories = splitAttribute(conf, excludedDirs);
+		files = splitAttribute(conf, excludedFiles);
 	}
 
 	public boolean isExcluded(File file) {
+		if(files.contains(file.getName())){
+			return true;
+		}
+		
 		if (directories.isEmpty()) {
 			return false;
 		}
@@ -53,10 +57,10 @@ public abstract class Excluder {
 		return false;
 	}
 
-	private Set<String> getExcludedDirectories(Settings conf) {
+	private Set<String> splitAttribute(Settings conf, String attributes) {
 		Set<String> result = new HashSet<String>();
 
-		String value = conf.getString(excluded);
+		String value = conf.getString(attributes);
 		if (value == null) {
 			return result;
 		}

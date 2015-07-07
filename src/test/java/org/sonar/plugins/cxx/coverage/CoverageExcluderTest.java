@@ -39,7 +39,7 @@ import org.sonar.plugins.cxx.TestUtils;
 public class CoverageExcluderTest {
 
 	@Test
-	public void testExcluded() {
+	public void testExcludedFromFolders() {
 		String directories = "var,log";
 		Settings settings = new Settings();
 		settings.appendProperty(
@@ -53,6 +53,23 @@ public class CoverageExcluderTest {
 		assertTrue(excluder.isExcluded(exluded));
 		assertTrue(excluder.isExcluded(exluded2));
 		assertTrue(excluder.isExcluded(exluded3));
+	}
+	
+	@Test
+	public void testFiles() {
+		String files = "file.txt,file2.txt";
+		Settings settings = new Settings();
+		settings.appendProperty(
+				CoverageExcluder.COVERAGE_EXDLUDED_FILES, files);
+		CoverageExcluder excluder = new CoverageExcluder(settings);
+
+		File exluded = new File("/var/nk/file.txt");
+		File exluded2 = new File("/nk/log/nk/file2.txt");
+		File notExluded = new File("/nk/log/log/file3.txt");
+
+		assertTrue(excluder.isExcluded(exluded));
+		assertTrue(excluder.isExcluded(exluded2));
+		assertFalse(excluder.isExcluded(notExluded));
 	}
 	
 	@Test

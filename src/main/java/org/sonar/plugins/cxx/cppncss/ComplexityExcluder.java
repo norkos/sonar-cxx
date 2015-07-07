@@ -25,9 +25,10 @@ import org.sonar.plugins.cxx.Excluder;
 public class ComplexityExcluder extends Excluder {
 
 	public static final String COMPLEXITY_EXDLUDED_DIRECTORIES = "sonar.cxx.complexity.excluded";
+	public static final String COMPLEXITY_EXDLUDED_FILES = "sonar.cxx.complexity.excluded.files";
 
 	public ComplexityExcluder(Settings conf) {
-		super(COMPLEXITY_EXDLUDED_DIRECTORIES, conf);
+		super(COMPLEXITY_EXDLUDED_DIRECTORIES, COMPLEXITY_EXDLUDED_FILES, conf);
 	}
 
 }
